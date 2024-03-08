@@ -4,4 +4,12 @@
     {
 
     }
+    public class Book
+    {
+    int id;
+    double price;
+    string name;
+    string genre;
+    }
+
 }
