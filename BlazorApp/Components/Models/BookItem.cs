@@ -14,7 +14,7 @@
 
             public string ImageUrl { get; set; }
 
-            //public string GetFormattedBasePrice() => Price.ToString("0.00");
+            
        
     }
 
