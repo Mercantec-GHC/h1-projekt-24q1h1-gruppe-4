@@ -1,7 +1,0 @@
-<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>270</x><y>240</y><w>210</w><h>120</h></coordinates><panel_attributes>_object: Class book_
---
-id: int
-name: string
-genre: string
-price: double
-</panel_attributes><additional_attributes></additional_attributes></element></diagram>
