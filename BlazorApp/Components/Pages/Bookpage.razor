@@ -1,12 +1,48 @@
 ﻿@page "/Bookpage"
+@using Domain_Models
+@inject List<UsedBooks> allProducts
+@inject NavigationManager Navigation
+@inject IWebHostEnvironment _hostingEnvironment
 
-<PageTitle>Buy books</PageTitle>
+<PageTitle>Buy Books</PageTitle>
 
-<h1>books</h1>
+<h1>Books</h1>
 
-<p role="status">Current number of books: 10</p>
-
+@if (books == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    foreach (var book in books)
+    {
+        <div>
+            <h2>@book.Title by @book.Author</h2>
+            <p><strong>Description:</strong> @book.Description</p>
+            <p><strong>Price:</strong> @book.Price.ToString("C")</p>
+            <p><strong>Condition:</strong> @book.Condition</p>
+            <p><strong>Category:</strong> @book.Category</p>
+            <p><strong>Language:</strong> @book.Language</p>
+            <p><strong>Release Date:</strong> @book.ReleaseDate</p>
+            <p><strong>Format:</strong> @book.Format</p>
+            <p><strong>ISBN:</strong> @book.ISBN</p>
+            <p><strong>Weight:</strong> @book.Weight kg</p>
+            <p><strong>Pages:</strong> @book.Pages</p>
+            <p><strong>Type:</strong> @book.Type</p>
+    @if (book.ImagePath != null)
+    {
+        <img src="@book.ImagePath" alt="Book image" style="max-width: 200px; max-height: 300px;">
+    }
+        </div>
+    }
+}
 
 @code {
- 
+    private List<UsedBooks>? books;
+
+    protected override async Task OnInitializedAsync()
+    {
+        books = await Task.FromResult(.GetAllUsedBooks());
+    }
 }
+
