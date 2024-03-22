@@ -1,45 +1,63 @@
-﻿@page "/Bookpage"
-@using Domain_Models
+﻿@page "/bookpage/{productId}"
 @inject List<UsedBooks> allProducts
-@inject NavigationManager Navigation
+@using Domain_Models
+@inject NavigationManager navManager
 @inject IWebHostEnvironment _hostingEnvironment
+@using BlazorApp.Services
 
 <PageTitle>Buy Books</PageTitle>
 
 <h1>Books</h1>
 
-@if (allProducts == null)
+@code {
+    [Parameter]
+    public string productId { get; set; }
+
+    public UsedBooks ProductToShow;
+
+    protected override void OnInitialized()
+    {
+        // Ensure productId is valid and within the range of allProducts
+        if (int.TryParse(productId, out int parsedId) && parsedId >= 0 && parsedId < allProducts.Count)
+        {
+            ProductToShow = allProducts[parsedId];
+        }
+        else
+        {
+            // Handle invalid productId (e.g., redirect to error page)
+            navManager.NavigateTo("/error");
+        }
+    }
+}
+
+@if (ProductToShow != null)
 {
-    <p><em>Loading...</em></p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <img src="@ProductToShow.ImagePath" alt="@ProductToShow.Title" class="img-fluid" />
+            </div>
+            <div class="col-md-6">
+                <h1>@ProductToShow.Title</h1>
+                <p>Author: @ProductToShow.Author</p>
+                <p>Condition: @ProductToShow.Condition</p>
+                <p>Category: @ProductToShow.Category</p>
+                <p>Price: @ProductToShow.Price</p>
+                <p>Language: @ProductToShow.Language</p>
+                <p>Release Date: @ProductToShow.ReleaseDate</p>
+                <p>Format: @ProductToShow.Format</p>
+                <p>ISBN: @ProductToShow.ISBN</p>
+                <p>Weight: @ProductToShow.Weight</p>
+                <p>Pages: @ProductToShow.Pages</p>
+                <p>Description: @ProductToShow.Description</p>
+                <p>Stars: @ProductToShow.Stars</p>
+                <p>Type: @ProductToShow.Type</p>
+            </div>
+        </div>
+    </div>
 }
 else
 {
-    foreach (var book in allProducts)
-    {
-        <div>
-            <h2>@book.Title by @book.Author</h2>
-            <p><strong>Description:</strong> @book.Description</p>
-            <p><strong>Price:</strong> @book.Price.ToString("C")</p>
-            <p><strong>Condition:</strong> @book.Condition</p>
-            <p><strong>Category:</strong> @book.Category</p>
-            <p><strong>Language:</strong> @book.Language</p>
-            <p><strong>Release Date:</strong> @book.ReleaseDate</p>
-            <p><strong>Format:</strong> @book.Format</p>
-            <p><strong>ISBN:</strong> @book.ISBN</p>
-            <p><strong>Weight:</strong> @book.Weight kg</p>
-            <p><strong>Pages:</strong> @book.Pages</p>
-            <p><strong>Type:</strong> @book.Type</p>
-    @if (book.ImagePath != null)
-    {
-        <img src="@book.ImagePath" alt="Book image" style="max-width: 200px; max-height: 300px;">
-    }
-        </div>
-    }
-}
-
-@code {
-
-    
-
+    <p>Loading...</p>
 }
 

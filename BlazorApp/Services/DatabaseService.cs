@@ -21,7 +21,7 @@ namespace BlazorApp.Services
             {
                 connection.Open();
 
-                string sql = "SELECT Id, Title, Author, Condition, Category, Price, ImagePath, Language, ReleaseDate, Format, ISBN, Weight, Pages, Description, Stars, Type";
+                string sql = "SELECT Id, Title, Author, Condition, Category, Price, ImagePath, Language, ReleaseDate, Format, ISBN, Weight, Pages, Description, Stars, Type FROM books";
                 using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
                 {
                     using (NpgsqlDataReader reader = command.ExecuteReader())
