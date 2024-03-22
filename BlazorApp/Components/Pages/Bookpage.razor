@@ -8,13 +8,13 @@
 
 <h1>Books</h1>
 
-@if (books == null)
+@if (allProducts == null)
 {
     <p><em>Loading...</em></p>
 }
 else
 {
-    foreach (var book in books)
+    foreach (var book in allProducts)
     {
         <div>
             <h2>@book.Title by @book.Author</h2>
@@ -38,11 +38,8 @@ else
 }
 
 @code {
-    private List<UsedBooks>? books;
 
-    protected override async Task OnInitializedAsync()
-    {
-        books = await Task.FromResult(.GetAllUsedBooks());
-    }
+    
+
 }
 

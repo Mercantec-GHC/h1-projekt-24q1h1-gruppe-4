@@ -49,10 +49,10 @@ namespace BlazorApp.Services
                         }
                         
                     }
-                connection.Close();
+                    return allProducts;
+                }
+
             }
-            return allProducts;
-        }
         }
     }
 }
