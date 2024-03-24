@@ -1,13 +1,15 @@
 ﻿using Domain_Models;
 using Npgsql;
-using System.Buffers;
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BlazorApp.Services
 {
     public class DatabaseService
     {
-        public string connectionString;
+        private readonly string connectionString;
 
         public DatabaseService(string connectionString)
         {
@@ -17,42 +19,84 @@ namespace BlazorApp.Services
         public List<UsedBooks> GetAllUsedBooks()
         {
             List<UsedBooks> allProducts = new List<UsedBooks>();
-            using (NpgsqlConnection connection = new NpgsqlConnection(connectionString))
+            using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
-
-                string sql = "SELECT Id, Title, Author, Condition, Category, Price, ImagePath, Language, ReleaseDate, Format, ISBN, Weight, Pages, Description, Stars, Type FROM books";
-                using (NpgsqlCommand command = new NpgsqlCommand(sql, connection))
+                string sql = "SELECT * FROM Books";
+                using (var command = new NpgsqlCommand(sql, connection))
                 {
-                    using (NpgsqlDataReader reader = command.ExecuteReader())
+                    using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            allProducts.Add(new UsedBooks(
-                                reader.IsDBNull(reader.GetOrdinal("Title")) ? null : reader["Title"].ToString(),
-                                reader.IsDBNull(reader.GetOrdinal("Author")) ? null : reader["Author"].ToString(),
-                                reader.IsDBNull(reader.GetOrdinal("Condition")) ? null : reader["Condition"].ToString(),
-                                reader.IsDBNull(reader.GetOrdinal("Category")) ? null : reader["Category"].ToString(),
-                                reader.IsDBNull(reader.GetOrdinal("Price")) ? 0.0m : Convert.ToDecimal(reader["Price"]),
-                                reader.IsDBNull(reader.GetOrdinal("ImagePath")) ? null : reader["ImagePath"].ToString(),
-                                reader.IsDBNull(reader.GetOrdinal("Language")) ? null : reader["Language"].ToString(),
-                                reader.IsDBNull(reader.GetOrdinal("ReleaseDate")) ? null : reader["ReleaseDate"].ToString(),
-                                reader.IsDBNull(reader.GetOrdinal("Format")) ? null : reader["Format"].ToString(),
-                                reader.IsDBNull(reader.GetOrdinal("ISBN")) ? 0L : Convert.ToInt64(reader["ISBN"]),
-                                reader.IsDBNull(reader.GetOrdinal("Weight")) ? 0.0f : Convert.ToSingle(reader["Weight"]),
-                                reader.IsDBNull(reader.GetOrdinal("Pages")) ? 0 : Convert.ToInt32(reader["Pages"]),
-                                reader.IsDBNull(reader.GetOrdinal("Description")) ? null : reader["Description"].ToString(),
-                                reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
-                                reader.IsDBNull(reader.GetOrdinal("Type")) ? null : reader["Type"].ToString()
-                                ));
-                            
+                            allProducts.Add(new UsedBooks
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Title = reader["Title"].ToString(),
+                                Author = reader["Author"].ToString(),
+                                Condition = reader["Condition"].ToString(),
+                                Category = reader["Category"].ToString(),
+                                Price = reader.IsDBNull(reader.GetOrdinal("Price")) ? 0.0m : Convert.ToDecimal(reader["Price"]),
+                                ImagePath = reader["ImagePath"].ToString(),
+                                Language = reader["Language"].ToString(),
+                                ReleaseDate = reader["ReleaseDate"].ToString(),
+                                Format = reader["Format"].ToString(),
+                                ISBN = reader.IsDBNull(reader.GetOrdinal("ISBN")) ? 0L : Convert.ToInt64(reader["ISBN"]),
+                                Weight = reader.IsDBNull(reader.GetOrdinal("Weight")) ? 0.0f : Convert.ToSingle(reader["Weight"]),
+                                Pages = reader.IsDBNull(reader.GetOrdinal("Pages")) ? 0 : Convert.ToInt32(reader["Pages"]),
+                                Description = reader["Description"].ToString(),
+                                Stars = reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
+                                Type = reader["Type"].ToString(),
+                                Reviews = reader["Reviews"] == DBNull.Value ? new List<string>() : ((string[])reader["Reviews"]).ToList(),
+                            });
                         }
-                        
                     }
-                    return allProducts;
                 }
-
             }
+            return allProducts;
+        }
+
+        public UsedBooks GetUsedBookById(int id)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var sql = "SELECT * FROM Books WHERE Id = @Id";
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", id);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new UsedBooks
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Title = reader["Title"].ToString(),
+                                Author = reader["Author"].ToString(),
+                                Condition = reader["Condition"].ToString(),
+                                Category = reader["Category"].ToString(),
+                                Price = reader.IsDBNull(reader.GetOrdinal("Price")) ? 0.0m : Convert.ToDecimal(reader["Price"]),
+                                ImagePath = reader["ImagePath"].ToString(),
+                                Language = reader["Language"].ToString(),
+                                ReleaseDate = reader["ReleaseDate"].ToString(),
+                                Format = reader["Format"].ToString(),
+                                ISBN = reader.IsDBNull(reader.GetOrdinal("ISBN")) ? 0L : Convert.ToInt64(reader["ISBN"]),
+                                Weight = reader.IsDBNull(reader.GetOrdinal("Weight")) ? 0.0f : Convert.ToSingle(reader["Weight"]),
+                                Pages = reader.IsDBNull(reader.GetOrdinal("Pages")) ? 0 : Convert.ToInt32(reader["Pages"]),
+                                Description = reader["Description"].ToString(),
+                                Stars = reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
+                                Type = reader["Type"].ToString(),
+                                Reviews = reader["Reviews"] == DBNull.Value ? new List<string>() : ((string[])reader["Reviews"]).ToList(),
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
         }
     }
 }
+
+
+

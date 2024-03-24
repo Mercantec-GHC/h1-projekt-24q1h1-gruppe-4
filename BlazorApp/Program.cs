@@ -13,9 +13,8 @@ namespace BlazorApp
 
             //GetAllUsedBooks from the Postgres DB
             IConfiguration Configuration = builder.Configuration;
-            string connectionString = Configuration.GetConnectionString("DefaultConnection") ?? Environment.GetEnvironmentVariable("DefaultConnection");
-            builder.Services.AddSingleton<List<UsedBooks>>(sp => new DatabaseService(connectionString).GetAllUsedBooks());
-
+            var connectionString = Configuration.GetConnectionString("DefaultConnection") ?? Environment.GetEnvironmentVariable("DefaultConnection");
+            builder.Services.AddSingleton<DatabaseService>(sp => new DatabaseService(connectionString));
 
             // Add services to the container.
             builder.Services.AddRazorComponents()

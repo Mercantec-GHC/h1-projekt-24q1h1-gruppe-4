@@ -8,24 +8,24 @@ namespace Domain_Models
     public class UsedBooks
     {
         public int Id { get; set; }
-        public string? Title { get; set; }
-        public string? Author { get; set; }
-        public string? Condition { get; set; }
-        public string? Category { get; set; }
+        public string Title { get; set; }
+        public string Author { get; set; }
+        public string Condition { get; set; }
+        public string Category { get; set; }
         public decimal Price { get; set; }
-        public string? ImagePath { get; set; }
-        public string? Language { get; set; }
-        public string? ReleaseDate { get; set; } 
-        public string? Format { get; set; }
+        public string ImagePath { get; set; }
+        public string Language { get; set; }
+        public string ReleaseDate { get; set; } 
+        public string Format { get; set; }
         public long ISBN { get; set; }
         public float Weight { get; set; }
         public int Pages { get; set; }
-        public string? Description { get; set; }
+        public string Description { get; set; }
         public float Stars { get; set; }
-        public List<string> Reviews { get; set; } = new List<string>(); 
-        public string? Type { get; set; }
+        public List<string> Reviews { get; set; }  
+        public string Type { get; set; }
 
-        public UsedBooks(string? Title, string? Author, string? Condition, string? Category, decimal Price, string? ImagePath, string? Language, string? ReleaseDate, string? Format, long ISBN, float Weight, int Pages, string? Description, float Stars, string? Type)
+        public UsedBooks(string Title, string Author, string Condition, string Category, decimal Price, string ImagePath, string Language, string ReleaseDate, string Format, long ISBN, float Weight, int Pages, string Description, float Stars, string Type)
         {
             this.Title = Title;
             this.Author = Author;
@@ -43,24 +43,11 @@ namespace Domain_Models
             this.Stars = Stars;
             this.Type = Type;
         }
+        
+        public UsedBooks()
+        {
+            // This is an empty constructor allowing for object initialization without parameters
+        }
 
     }
-    public class user
-    {
-        string name;
-        int id;
-        string login;
-        string email;
-    }
-
-    public class Book
-    {
-        int id;
-        int owner_id;
-        string wear;
-        double price;
-        string name;
-        string genre;
-    }
-
 }

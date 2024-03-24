@@ -1,63 +1,110 @@
-﻿@page "/bookpage/{productId}"
-@inject List<UsedBooks> allProducts
-@using Domain_Models
+﻿@page "/bookpage/{productId:int?}"
+@inject DatabaseService databaseService
 @inject NavigationManager navManager
-@inject IWebHostEnvironment _hostingEnvironment
-@using BlazorApp.Services
 
-<PageTitle>Buy Books</PageTitle>
-
-<h1>Books</h1>
-
-@code {
-    [Parameter]
-    public string productId { get; set; }
-
-    public UsedBooks ProductToShow;
-
-    protected override void OnInitialized()
-    {
-        // Ensure productId is valid and within the range of allProducts
-        if (int.TryParse(productId, out int parsedId) && parsedId >= 0 && parsedId < allProducts.Count)
-        {
-            ProductToShow = allProducts[parsedId];
-        }
-        else
-        {
-            // Handle invalid productId (e.g., redirect to error page)
-            navManager.NavigateTo("/error");
-        }
-    }
-}
+<PageTitle>Book Details</PageTitle>
 
 @if (ProductToShow != null)
 {
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <img src="@ProductToShow.ImagePath" alt="@ProductToShow.Title" class="img-fluid" />
-            </div>
-            <div class="col-md-6">
+    <div>
+        <div class="book-item">
+            <img src="@ProductToShow.ImagePath" alt="Book image" class="book-image" />
+            <div class="book-details">
                 <h1>@ProductToShow.Title</h1>
+                <p>Description: @ProductToShow.Description</p>
                 <p>Author: @ProductToShow.Author</p>
-                <p>Condition: @ProductToShow.Condition</p>
-                <p>Category: @ProductToShow.Category</p>
-                <p>Price: @ProductToShow.Price</p>
+                <p>Price: kr. @ProductToShow.Price</p>
                 <p>Language: @ProductToShow.Language</p>
                 <p>Release Date: @ProductToShow.ReleaseDate</p>
-                <p>Format: @ProductToShow.Format</p>
                 <p>ISBN: @ProductToShow.ISBN</p>
-                <p>Weight: @ProductToShow.Weight</p>
                 <p>Pages: @ProductToShow.Pages</p>
-                <p>Description: @ProductToShow.Description</p>
-                <p>Stars: @ProductToShow.Stars</p>
-                <p>Type: @ProductToShow.Type</p>
+                <p>Category: @ProductToShow.Category</p>
+                <p>Condition: @ProductToShow.Condition</p>
+                @if (ProductToShow.Reviews != null && ProductToShow.Reviews.Count > 0)
+                {
+                    <h3>Reviews:</h3>
+                    @foreach (var review in ProductToShow.Reviews)
+                    {
+                        <p>@review</p>
+                    }
+                }
             </div>
         </div>
     </div>
 }
+else if (allProducts != null && allProducts.Count > 0)
+{
+    <div class="search-container">
+        <input type="text" placeholder="Search by title, author, category, or ISBN" @bind="searchQuery" @bind:event="oninput" />
+        <button @onclick="FilterBooks">Search</button>
+    </div>
+    <h2>All Books</h2>
+    <div class="books-container">
+        @foreach (var book in allProducts)
+        {
+            <div class="book-card" @onclick="@( () => navManager.NavigateTo($"/bookpage/{book.Id}") )">
+                <div class="book-item">
+                    <img src="@book.ImagePath" alt="Book image" class="book-image" />
+                    <div class="book-details">
+                        <h3>@book.Title</h3>
+                        <p>@book.Author</p>
+                        <p>kr. @book.Price</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
 else
 {
-    <p>Loading...</p>
+    <p>No books found.</p>
 }
+
+@code {
+    [Parameter]
+    public int? productId { get; set; }
+
+    public UsedBooks ProductToShow { get; set; }
+    public List<UsedBooks> allProducts { get; set; }
+    private string searchQuery = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        if (productId.HasValue)
+        {
+            ProductToShow = databaseService.GetUsedBookById(productId.Value);
+            allProducts = null; // Ensure list of books is not displayed alongside single book details
+        }
+        else
+        {
+            FilterBooks();
+        }
+    }
+
+    private void FilterBooks()
+    {
+        allProducts = databaseService.GetAllUsedBooks();
+
+        if (!string.IsNullOrWhiteSpace(searchQuery))
+        {
+            string lowerCaseSearchQuery = searchQuery.ToLower();
+
+            allProducts = allProducts.Where(book =>
+                book.Title.ToLower().Contains(lowerCaseSearchQuery) ||
+                book.Author.ToLower().Contains(lowerCaseSearchQuery) ||
+                book.Category.ToLower().Contains(lowerCaseSearchQuery) ||
+                book.ISBN.ToString().ToLower().Contains(lowerCaseSearchQuery)
+            ).ToList();
+        }
+
+        ProductToShow = null; // Ensure single book details are not displayed alongside list of books
+    }
+}
+
+
+
+
+
+
+
 
