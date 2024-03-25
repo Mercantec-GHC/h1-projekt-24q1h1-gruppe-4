@@ -16,6 +16,10 @@ container {
     margin-top: 20px;
 }
 
+.content_center {
+    justify-content: center; /* Horizontally center the flex items */
+}
+
 .shiny-button {
     background-color: #7E57C2; /* Purple */
     border: none;
@@ -48,4 +52,18 @@ container {
     100% {
         background-position: 200% 50%;
     }
+}
+
+
+
+
+
+.book_scroll_container {
+    overflow-x: auto; /* Enable horizontal scrollbar */
+    overflow-y: hidden;
+}
+
+.book_scroll_content {
+    /* Add styles for your content */
+    width: calc(300px * 7); /* For demonstration purpose, adjust as per your content */
 }

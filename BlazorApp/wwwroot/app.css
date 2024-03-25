@@ -55,6 +55,7 @@ h1:focus {
     flex-wrap: wrap;
     gap: 70px; /* Adjust the gap as needed */
     justify-content: flex-start; /* Aligns items to the start of the container */
+    justify-content: end; /* Align grid to the end (right in LTR languages) */
 }
 
 .book-card {

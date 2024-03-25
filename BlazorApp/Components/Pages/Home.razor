@@ -1,4 +1,7 @@
-﻿@page "/"
+﻿@inject DatabaseService databaseService
+@inject NavigationManager navManager
+
+@page "/"
 <link rel="stylesheet" href="home.css" />
 
 
@@ -34,6 +37,51 @@
                 <li>Contact Sellers</li>
                 <li>Purchase and Enjoy</li>
             </ol>
-            <p>Join the Your Book Haven community today and start your next reading adventure!</p>
+            <p>Join us today and give old books a new life!</p>
         </section>
+        <h1>Latest books</h1>
+
+        <div class="book_scroll_container">
+    <div class="book_scroll_content">
+        <div class="books-container">
+        @if (allProducts != null) @foreach (var book in allProducts)
+        {
+            <div class="book-card" @onclick="@( () => navManager.NavigateTo($"/bookpage/{book.Id}") )">
+                <div class="book-item">
+                    <img src="@book.ImagePath" alt="Book image" class="book-image" />
+                    <div class="book-details">
+                        <h3>@book.Title</h3>
+                        <p>@book.Author</p>
+                        <p>kr. @book.Price</p>
+                    </div>
+                </div>
+            </div>
+        }
     </div>
+    </div>
+    </div>
+</div>
+
+
+@code {
+
+    [Parameter]
+    public int? productId { get; set; }
+
+    public UsedBooks ProductToShow { get; set; }
+    public List<UsedBooks> allProducts { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        LoadNewestBooks();
+    }
+
+    private void LoadNewestBooks()
+    {   allProducts = databaseService.GetBooksFromSql("SELECT * FROM Books ORDER BY id DESC LIMIT 6;");
+
+    }
+
+}
+
+
