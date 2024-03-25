@@ -2,7 +2,7 @@
 @inject DatabaseService databaseService
 @inject NavigationManager navManager
 
-<PageTitle>Book Details</PageTitle>
+<PageTitle>Books</PageTitle>
 
 @if (ProductToShow != null)
 {
@@ -61,6 +61,7 @@ else
 }
 
 @code {
+
     [Parameter]
     public int? productId { get; set; }
 
