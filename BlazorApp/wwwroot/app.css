@@ -49,3 +49,44 @@ h1:focus {
 .darker-border-checkbox.form-check-input {
     border-color: #929292;
 }
+
+.books-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 70px; /* Adjust the gap as needed */
+    justify-content: flex-start; /* Aligns items to the start of the container */
+}
+
+.book-card {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns items to the start of the card */
+    width: 254px; /* Set a fixed width for each book card */
+    padding: 26px; /* Adds space inside the card around the content */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effects */
+    cursor: pointer; /* Changes the cursor to indicate the item is clickable */
+}
+
+    .book-card:hover {
+        transform: scale(1.02); /* Slightly enlarges the card to indicate it's clickable */
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Adds shadow for depth */
+    }
+
+.book-image {
+    width: 200px; /* Fixed width for all images */
+    height: 300px; /* Fixed height for all images */
+    object-fit: cover; /* This will crop the image to cover the area */
+    display: block; /* To remove any extra space below the image */
+}
+
+.book-details {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Aligns text to the start */
+}
+
+
+
+
+
