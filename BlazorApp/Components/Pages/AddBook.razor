@@ -2,6 +2,7 @@
 @inject DatabaseService databaseService
 @inject NavigationManager navManager
 @using Npgsql;
+@using NpgsqlTypes
 
 <PageTitle>Add Book</PageTitle>
 
@@ -30,7 +31,7 @@
     </div>
     <div class="form-group">
         <label for="releaseDate">Release Date:</label>
-        <input type="date" id="releaseDate" name="ReleaseDate" class="form-control" @bind="releaseDate"/>
+        <input type="text" id="releaseDate" name="ReleaseDate" class="form-control" @bind="releaseDate"/>
     </div>
     <div class="form-group">
         <label for="isbn">ISBN:</label>
@@ -66,24 +67,25 @@
     private decimal price;
     private string imagePath;
     private string language;
-    private DateTime releaseDate;
+    private string releaseDate;
     private string format;
-    private string isbn;
-    private double weight;
+    private long isbn;
+    private float weight;
     private int pages;
     private string description;
-    private int stars;
+    private float stars;
     private string type;
 
     private async Task AddBookToDatabase()
 
     {
 
-        
-        string connectionString = "Host=ep-royal-dust-a22iq0yc.eu-central-1.aws.neon.tech;Port=5432;Username=UsedBooks_owner;Password=7UO0kgQJFsLP;Database=UsedBooks;SSL Mode=Require";
+
+        string connectionString = "Host=ep-royal-dust-a22iq0yc.eu-central-1.aws.neon.tech;Port=5432;Username=UsedBooks_owner;Password=7UO0kgQJFsLP;Database=UsedBooks;SSLMode=Require";
 
         using var connection = new NpgsqlConnection(connectionString);
         connection.Open();
+
         using (var cmd = new NpgsqlCommand())
         {
             cmd.Connection = connection;
@@ -99,7 +101,13 @@
             cmd.Parameters.AddWithValue("ImagePath", imagePath);
             cmd.Parameters.AddWithValue("Language", language);
             cmd.Parameters.AddWithValue("ReleaseDate", releaseDate);
-            cmd.Parameters.AddWithValue("Format", format);
+            //cmd.Parameters.AddWithValue("Format", format);
+            // Explicitly set NpgsqlDbType for Format parameter
+            // Explicitly set NpgsqlDbType for Format parameter and handle null case
+            cmd.Parameters.Add(new NpgsqlParameter("Format", NpgsqlDbType.Text));
+            cmd.Parameters["Format"].Value = format != null ? format : DBNull.Value;
+
+
             cmd.Parameters.AddWithValue("ISBN", isbn);
             cmd.Parameters.AddWithValue("Weight", weight);
             cmd.Parameters.AddWithValue("Pages", pages);
@@ -108,12 +116,14 @@
             cmd.Parameters.AddWithValue("Type", type);
 
             // Execute the SQL command
+            
             await cmd.ExecuteNonQueryAsync();
+           
         }
     
         }
 
-    }
+    
 }
 
 
