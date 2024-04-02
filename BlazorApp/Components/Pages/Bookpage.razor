@@ -1,10 +1,11 @@
-﻿@page "/bookpage/{productId:int?}"
+﻿@page "/bookpage/{productId:int}"
 @inject DatabaseService databaseService
-@inject NavigationManager navManager
 
-<PageTitle>Books</PageTitle>
-
-@if (ProductToShow != null)
+@if (ProductToShow == null)
+{
+    <p>Loading book details...</p>
+}
+else
 {
     <div>
         <div class="book-item">
@@ -32,75 +33,20 @@
         </div>
     </div>
 }
-else if (allProducts != null && allProducts.Count > 0)
-{
-    <div class="search-container">
-        <input type="text" placeholder="Search by title, author, category, or ISBN" @bind="searchQuery" @bind:event="oninput" />
-        <button @onclick="FilterBooks">Search</button>
-    </div>
-    <h2>All Books</h2>
-    <div class="books-container">
-        @foreach (var book in allProducts)
-        {
-            <div class="book-card" @onclick="@( () => navManager.NavigateTo($"/bookpage/{book.Id}") )">
-                <div class="book-item">
-                    <img src="@book.ImagePath" alt="Book image" class="book-image" />
-                    <div class="book-details">
-                        <h3>@book.Title</h3>
-                        <p>@book.Author</p>
-                        <p>kr. @book.Price</p>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
-}
-else
-{
-    <p>No books found.</p>
-}
 
 @code {
-
     [Parameter]
-    public int? productId { get; set; }
+    public int productId { get; set; }
 
-    public UsedBooks ProductToShow { get; set; }
-    public List<UsedBooks> allProducts { get; set; }
-    private string searchQuery = string.Empty;
+    private UsedBooks ProductToShow;
 
-    protected override void OnParametersSet()
+    protected override void OnInitialized()
     {
-        if (productId.HasValue)
-        {
-            ProductToShow = databaseService.GetUsedBookById(productId.Value);
-            allProducts = null; // Ensure list of books is not displayed alongside single book details
-        }
-        else
-        {
-            FilterBooks();
-        }
-    }
-
-    private void FilterBooks()
-    {
-        allProducts = databaseService.GetAllUsedBooks();
-
-        if (!string.IsNullOrWhiteSpace(searchQuery))
-        {
-            string lowerCaseSearchQuery = searchQuery.ToLower();
-
-            allProducts = allProducts.Where(book =>
-                book.Title.ToLower().Contains(lowerCaseSearchQuery) ||
-                book.Author.ToLower().Contains(lowerCaseSearchQuery) ||
-                book.Category.ToLower().Contains(lowerCaseSearchQuery) ||
-                book.ISBN.ToString().ToLower().Contains(lowerCaseSearchQuery)
-            ).ToList();
-        }
-
-        ProductToShow = null; // Ensure single book details are not displayed alongside list of books
+        ProductToShow = databaseService.GetUsedBookById(productId);
     }
 }
+
+
 
 
 
