@@ -20,6 +20,8 @@
                 <p>Pages: @ProductToShow.Pages</p>
                 <p>Category: @ProductToShow.Category</p>
                 <p>Condition: @ProductToShow.Condition</p>
+                @* skal ændres til at bruge reviews table
+                
                 @if (ProductToShow.Reviews != null && ProductToShow.Reviews.Count > 0)
                 {
                     <h3>Reviews:</h3>
@@ -28,6 +30,7 @@
                         <p>@review</p>
                     }
                 }
+                *@ 
             </div>
         </div>
     </div>
