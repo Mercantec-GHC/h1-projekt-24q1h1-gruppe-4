@@ -1,0 +1,129 @@
+﻿@page "/AddBook"
+@inject DatabaseService databaseService
+@inject NavigationManager navManager
+@using Npgsql;
+@using NpgsqlTypes
+
+<PageTitle>Add Book</PageTitle>
+
+<h2>Add a New Book</h2>
+
+<form method="post" @onsubmit="AddBookToDatabase">
+    <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="Title" class="form-control" @bind="title"/>
+    </div>
+    <div class="form-group">
+        <label for="author">Author:</label>
+        <input type="text" id="author" name="Author" class="form-control" @bind="author"/>
+    </div>
+    <div class="form-group">
+        <label for="description">Description:</label>
+        <textarea id="description" name="Description" class="form-control" @bind="description"></textarea>
+    </div>
+    <div class="form-group">
+        <label for="price">Price:</label>
+        <input type="number" id="price" name="Price" class="form-control" @bind="price"/>
+    </div>
+    <div class="form-group">
+        <label for="language">Language:</label>
+        <input type="text" id="language" name="Language" class="form-control" @bind="language"/>
+    </div>
+    <div class="form-group">
+        <label for="releaseDate">Release Date:</label>
+        <input type="text" id="releaseDate" name="ReleaseDate" class="form-control" @bind="releaseDate"/>
+    </div>
+    <div class="form-group">
+        <label for="isbn">ISBN:</label>
+        <input type="text" id="isbn" name="ISBN" class="form-control" @bind="isbn"/>
+    </div>
+    <div class="form-group">
+        <label for="pages">Pages:</label>
+        <input type="number" id="pages" name="Pages" class="form-control" @bind="pages"/>
+    </div>
+    <div class="form-group">
+        <label for="category">Category:</label>
+        <input type="text" id="category" name="Category" class="form-control" @bind="category"/>
+    </div>
+    <div class="form-group">
+        <label for="condition">Condition:</label>
+        <input type="text" id="condition" name="Condition" class="form-control" @bind="condition"/>
+    </div>
+    <div class="form-group">
+        <label for="imagePath">Image Path:</label>
+        <input type="text" id="imagePath" name="ImagePath" class="form-control" @bind="imagePath"/>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Book</button>
+
+</form>
+
+
+@code {
+    private string title;
+    private string author;
+    private string condition;
+    private string category;
+    private decimal price;
+    private string imagePath;
+    private string language;
+    private string releaseDate;
+    private string format;
+    private long isbn;
+    private float weight;
+    private int pages;
+    private string description;
+    private float stars;
+    private string type;
+
+    private async Task AddBookToDatabase()
+
+    {
+
+
+        string connectionString = "Host=ep-royal-dust-a22iq0yc.eu-central-1.aws.neon.tech;Port=5432;Username=UsedBooks_owner;Password=7UO0kgQJFsLP;Database=UsedBooks;SSLMode=Require";
+
+        using var connection = new NpgsqlConnection(connectionString);
+        connection.Open();
+
+        using (var cmd = new NpgsqlCommand())
+        {
+            cmd.Connection = connection;
+
+            cmd.CommandText = @"INSERT INTO Books(Title, Author, Condition, Category, Price, ImagePath, Language, ReleaseDate, Format, ISBN, Weight, Pages, Description, Stars, Type)
+                     VALUES (@Title, @Author, @Condition, @Category, @Price, @ImagePath, @Language, @ReleaseDate, @Format, @ISBN, @Weight, @Pages, @Description, @Stars, @Type)";
+
+            cmd.Parameters.AddWithValue("Title", title);
+            cmd.Parameters.AddWithValue("Author", author);
+            cmd.Parameters.AddWithValue("Condition", condition);
+            cmd.Parameters.AddWithValue("Category", category);
+            cmd.Parameters.AddWithValue("Price", price);
+            cmd.Parameters.AddWithValue("ImagePath", imagePath);
+            cmd.Parameters.AddWithValue("Language", language);
+            cmd.Parameters.AddWithValue("ReleaseDate", releaseDate);
+            //cmd.Parameters.AddWithValue("Format", format);
+            // Explicitly set NpgsqlDbType for Format parameter
+            // Explicitly set NpgsqlDbType for Format parameter and handle null case
+            cmd.Parameters.Add(new NpgsqlParameter("Format", NpgsqlDbType.Text));
+            cmd.Parameters["Format"].Value = format != null ? format : DBNull.Value;
+
+
+            cmd.Parameters.AddWithValue("ISBN", isbn);
+            cmd.Parameters.AddWithValue("Weight", weight);
+            cmd.Parameters.AddWithValue("Pages", pages);
+            cmd.Parameters.AddWithValue("Description", description);
+            cmd.Parameters.AddWithValue("Stars", stars);
+            cmd.Parameters.AddWithValue("Type", type);
+
+            // Execute the SQL command
+            
+            await cmd.ExecuteNonQueryAsync();
+           
+        }
+    
+        }
+
+    
+}
+
+
