@@ -1,4 +1,5 @@
 ﻿using Domain_Models;
+using Microsoft.AspNetCore.Mvc;
 using Npgsql;
 using System;
 using System.Collections.Generic;
@@ -25,7 +26,7 @@ namespace BlazorApp.Services
                 connection.Open();
                 using (var command = new NpgsqlCommand(sql, connection))
                 {
-                    using (var reader = command.ExecuteReader())
+                    using (var reader = command.ExecuteReader())         
                     {
                         while (reader.Read())
                         {
@@ -45,9 +46,9 @@ namespace BlazorApp.Services
                                 Weight = reader.IsDBNull(reader.GetOrdinal("Weight")) ? 0.0f : Convert.ToSingle(reader["Weight"]),
                                 Pages = reader.IsDBNull(reader.GetOrdinal("Pages")) ? 0 : Convert.ToInt32(reader["Pages"]),
                                 Description = reader["Description"].ToString(),
-                                Stars = reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
+                                //Stars = reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
                                 Type = reader["Type"].ToString(),
-                                Reviews = reader["Reviews"] == DBNull.Value ? new List<string>() : ((string[])reader["Reviews"]).ToList(),
+                                //Reviews = reader["Reviews"] == DBNull.Value ? new List<string>() : ((string[])reader["Reviews"]).ToList(),
                             });
                         }
                     }
@@ -84,9 +85,9 @@ namespace BlazorApp.Services
                                 Weight = reader.IsDBNull(reader.GetOrdinal("Weight")) ? 0.0f : Convert.ToSingle(reader["Weight"]),
                                 Pages = reader.IsDBNull(reader.GetOrdinal("Pages")) ? 0 : Convert.ToInt32(reader["Pages"]),
                                 Description = reader["Description"].ToString(),
-                                Stars = reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
+                                //Stars = reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
                                 Type = reader["Type"].ToString(),
-                                Reviews = reader["Reviews"] == DBNull.Value ? new List<string>() : ((string[])reader["Reviews"]).ToList(),
+                                //Reviews = reader["Reviews"] == DBNull.Value ? new List<string>() : ((string[])reader["Reviews"]).ToList(),
                             });
                         }
                     }
@@ -124,7 +125,7 @@ namespace BlazorApp.Services
                                 Weight = reader.IsDBNull(reader.GetOrdinal("Weight")) ? 0.0f : Convert.ToSingle(reader["Weight"]),
                                 Pages = reader.IsDBNull(reader.GetOrdinal("Pages")) ? 0 : Convert.ToInt32(reader["Pages"]),
                                 Description = reader["Description"].ToString(),
-                                Stars = reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
+                                //Stars = reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
                                 Type = reader["Type"].ToString(),
                                 Reviews = reader["Reviews"] == DBNull.Value ? new List<string>() : ((string[])reader["Reviews"]).ToList(),
                             };
@@ -134,8 +135,38 @@ namespace BlazorApp.Services
             }
             return null;
         }
+
+        public void AddBook(Book book)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+
+                using (var cmd = new NpgsqlCommand(@"INSERT INTO Books(Title, Author, Condition, Category, Price, ImagePath, Language, ReleaseDate, ISBN, Pages, Description, UserID)
+                 VALUES (@Title, @Author, @Condition, @Category, @Price, @ImagePath, @Language, @ReleaseDate, @ISBN, @Pages, @Description, @UserID)", connection))
+                {
+                    cmd.Parameters.AddWithValue("Title", book.Title);
+                    cmd.Parameters.AddWithValue("Author", book.Author);
+                    cmd.Parameters.AddWithValue("Condition", book.Condition);
+                    cmd.Parameters.AddWithValue("Category", book.Category);
+                    cmd.Parameters.AddWithValue("Price", book.Price);
+                    cmd.Parameters.AddWithValue("ImagePath", book.ImagePath);
+                    cmd.Parameters.AddWithValue("Language", book.Language);
+                    cmd.Parameters.AddWithValue("ReleaseDate", book.ReleaseDate);
+                    cmd.Parameters.AddWithValue("ISBN", book.ISBN);
+                    cmd.Parameters.AddWithValue("Pages", book.Pages);
+                    cmd.Parameters.AddWithValue("Description", book.Description);
+                    cmd.Parameters.AddWithValue("UserID", 1); // Erstat med den faktiske bruger-ID
+                    cmd.ExecuteNonQuery();
+                }
+            }
+   
+        }
     }
+
+
 }
+
 
 
 
