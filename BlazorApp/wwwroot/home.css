@@ -61,9 +61,12 @@ container {
 .book_scroll_container {
     overflow-x: auto; /* Enable horizontal scrollbar */
     overflow-y: hidden;
+    text-align: right; /* Align content to the right */
+    justify-content: flex-end; /* Align content to the right */
 }
 
 .book_scroll_content {
     /* Add styles for your content */
-    width: calc(300px * 7); /* For demonstration purpose, adjust as per your content */
+    width: 2100px; /* For demonstration purpose, adjust as per your content */
+    justify-content: center; /* Horizontally center the flex items */
 }
