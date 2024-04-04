@@ -20,17 +20,22 @@
                 <p>Pages: @ProductToShow.Pages</p>
                 <p>Category: @ProductToShow.Category</p>
                 <p>Condition: @ProductToShow.Condition</p>
-                @* skal ændres til at bruge reviews table
-                
-                @if (ProductToShow.Reviews != null && ProductToShow.Reviews.Count > 0)
+                @if (reviewList.Count > 0)
                 {
+                    float rating = 0.0f;
                     <h3>Reviews:</h3>
-                    @foreach (var review in ProductToShow.Reviews)
+                    @foreach (var review in reviewList)
                     {
-                        <p>@review</p>
+                        <p>@review.ReviewString</p>
+                        rating += review.Rating;
                     }
+                    
+                    <h3>Average rating : @(rating/reviewList.Count) / 5</h3>
                 }
-                *@ 
+                else
+                {
+                    <h3> No reviews found in database.</h3>
+                }
             </div>
         </div>
     </div>
@@ -71,12 +76,15 @@ else
     public UsedBooks ProductToShow { get; set; }
     public List<UsedBooks> allProducts { get; set; }
     private string searchQuery = string.Empty;
+    
+    public List<Review> reviewList {get; set; }
 
     protected override void OnParametersSet()
     {
         if (productId.HasValue)
         {
             ProductToShow = databaseService.GetUsedBookById(productId.Value);
+            reviewList = databaseService.GetReviewsFromSql("SELECT * FROM Reviews WHERE ISBN = "+ ProductToShow.ISBN);
             allProducts = null; // Ensure list of books is not displayed alongside single book details
         }
         else
