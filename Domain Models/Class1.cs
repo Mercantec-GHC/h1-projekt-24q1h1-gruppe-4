@@ -43,7 +43,7 @@ namespace Domain_Models
         public decimal Price { get; set; }
         public string ImagePath { get; set; }
         public string Language { get; set; }
-        public string ReleaseDate { get; set; } 
+        public DateTime ReleaseDate { get; set; } 
         public string Format { get; set; }
         public long ISBN { get; set; }
         public float Weight { get; set; }
@@ -53,7 +53,7 @@ namespace Domain_Models
        // public List<string> Reviews { get; set; }  
         public string Type { get; set; }
 
-        public UsedBooks(string Title, string Author, string Condition, string Category, decimal Price, string ImagePath, string Language, string ReleaseDate, string Format, long ISBN, float Weight, int Pages, string Description /*, float Stars,*/, string Type)
+        public UsedBooks(string Title, string Author, string Condition, string Category, decimal Price, string ImagePath, string Language, DateTime ReleaseDate, string Format, long ISBN, float Weight, int Pages, string Description, float Stars, string Type)
         {
             this.Title = Title;
             this.Author = Author;

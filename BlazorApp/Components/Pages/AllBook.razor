@@ -1,65 +1,71 @@
-
-@*
-
 @page "/AllBook"
->>>>>>> Seb_Branch
-@namespace BlazorApp.Components.Models
+@inject DatabaseService databaseService
+@inject NavigationManager navManager
 
-
-
-
-<PageTitle>All Books</PageTitle>
-
-<h1> All books</h1>
-
-<p role="status">Current number of books: @books.Count</p>
-
-@if (books != null)
+@if (allBooks == null)
 {
-    <div class="books">
-        @foreach (var book in books)
-{
-    <div class="book" style="display: flex; align-items: center; border: 1px solid #ccc; border-radius: 5px; padding: 20px;">
-        <img src="@book.ImageUrl" alt="@book.Title" style="max-width: 100px; height: auto; border-radius: 5px; margin-right: 20px;" />
-        <div>
-            <h3 style="font-size: 1.2em; margin: 0;">@book.Title</h3>
-            <p style="margin: 5px 0; font-weight: bold;">By: @book.Author</p>
-            <p style="margin: 5px 0;">ID: @book.Id</p>
-            <p style="margin: 5px 0;">@book.Description</p>
-            <p style="margin: 5px 0;">Price: @book.Price</p>
-        </div>
-    </div>
+    <p>Loading books...</p>
 }
+else if (allBooks.Count == 0)
+{
+    <p>No books available.</p>
+}
+else
+{
+    <div class="search-container">
+        <input type="text" placeholder="Search by title, author, category, or ISBN" @bind="searchQuery" @bind:event="oninput" />
+        <button @onclick="FilterBooks">Search</button>
+    </div>
 
+    <h2>All Books</h2>
+    <div class="books-container">
+
+    @foreach (var book in allBooks)
+    {
+        <div class="book-card" @onclick="() => ViewBookDetails(book.Id)">
+            <div class="book-item">
+                <img src="@book.ImagePath" alt="Book cover" class="book-image" />
+                <div>
+                    <div class="book-details">
+                        <h2>@book.Title</h2>
+                        <p>@book.Author</p>
+                        <p>kr. @book.Price</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
     </div>
 }
 
 @code {
-
-    List<BookItem> books = new();
+    private List<UsedBooks> allBooks;
+    private string searchQuery = string.Empty;
 
     protected override void OnInitialized()
     {
-        books.AddRange(new List<BookItem>
-        {
-
-        new BookItem { Id = 1, Title = "Befri Preben", Author = "Rikke Østergaard", Description = "Description 1", Price = 12.99m, ImageUrl = @"img/books/BefriPreben.jpeg" },
-        new BookItem { Id = 2, Title = "Det Blinde Øje", Author = "Mathilde Malter Clark", Description = "Description 2", Price = 15.99m, ImageUrl = @"img/books/DetBlindeOje.jpeg" },
-        new BookItem { Id = 3, Title = "Det Fantatiske Bus", Author = "Jakob Martin Strid", Description = "Description 3", Price = 9.99m, ImageUrl = @"img/books/DetFantatiskeBus.jpeg" },
-        new BookItem { Id = 4, Title = "Gik Einstein Til Fitness ", Author = "Troels W.Kjær", Description = "Description 1", Price = 12.99m, ImageUrl = @"img/books/GikEinsteinTilFitness.jpeg" },
-        new BookItem { Id = 5, Title = "Hans Christian", Author = "Jesper Wung-Sung", Description = "Description 1", Price = 12.99m, ImageUrl = @"img/books/HansChristian.jpeg" },
-        new BookItem { Id = 6, Title = "HjerneRo", Author = "Martin Riis Kastrup", Description = "Description 2", Price = 15.99m, ImageUrl = @"img/books/HjerneRo.jpeg" },
-        new BookItem { Id = 7, Title = "JAGTTEGN", Author = "Niels Krause-Kjær", Description = "Description 3", Price = 9.99m, ImageUrl = @"img/books/Jagten.jpeg" },
-        new BookItem { Id = 8, Title = "Konge Ord", Author = "Jens Andersenr", Description = "Description 1", Price = 12.99m, ImageUrl = @"img/books/Logner.jpeg" },
-        new BookItem { Id = 9, Title = "Løgner", Author = "Kim Faber & Janni Pdersend", Description = "Description 1", Price = 12.99m, ImageUrl = @"img/books/MereErAldrigNok.jpeg" },
-        new BookItem { Id = 10, Title = "Mere er aldrig nok", Author = "Niels Overgaard", Description = "Description 2", Price = 15.99m, ImageUrl = @"img/books/OvelserIMorke.jpeg" },
-        new BookItem { Id = 11, Title = "Øvelser I Mørke", Author = "Naja Marie Aidt", Description = "Forbundne, forpligtet, for Kongeriget Danmark”.    ", Price = 9.99m, ImageUrl = @"img/books/KongeOrd.jpeg" },
-        new BookItem { Id = 12, Title = "Tre", Author = "Vale'rie Perrin", Description = "Tre er en gribende og bevægende fortælling af Valérie Perrin, der tidligere har givet os den internationale bestseller Vand til blomster.", Price = 12.99m, ImageUrl = @"img/books/Tre.jpeg" },
-        new BookItem { Id = 13, Title = "Terminalen", Author = "Michael Katz Krefeld", Description = "Terminalen er ottende selvstændige bog i den anmelderroste bestsellerserie om privatdetektiven Thomas ’Ravn’ Ravnsholt, der bor sammen med sin bulldog, Møffe, på en båd i Christianshavns Kanal.", Price = 15.99m, ImageUrl = @"img/books/Terminalen.jpeg" },
-
-    });
-
+        allBooks = databaseService.GetAllUsedBooks();
     }
 
+    void ViewBookDetails(int bookId)
+    {
+        navManager.NavigateTo($"/bookpage/{bookId}");
+    }
+
+    private void FilterBooks()
+    {
+        allBooks = databaseService.GetAllUsedBooks();
+
+        if (!string.IsNullOrWhiteSpace(searchQuery))
+        {
+            string lowerCaseSearchQuery = searchQuery.ToLower();
+
+            allBooks = allBooks.Where(book =>
+                book.Title.ToLower().Contains(lowerCaseSearchQuery) ||
+                book.Author.ToLower().Contains(lowerCaseSearchQuery) ||
+                book.Category.ToLower().Contains(lowerCaseSearchQuery) ||
+                book.ISBN.ToString().ToLower().Contains(lowerCaseSearchQuery)
+            ).ToList();
+        }
+    }
 }
-*@
