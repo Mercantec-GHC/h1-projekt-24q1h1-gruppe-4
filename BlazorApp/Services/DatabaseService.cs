@@ -39,15 +39,13 @@ namespace BlazorApp.Services
                                 Price = reader.IsDBNull(reader.GetOrdinal("Price")) ? 0.0m : Convert.ToDecimal(reader["Price"]),
                                 ImagePath = reader["ImagePath"].ToString(),
                                 Language = reader["Language"].ToString(),
-                                ReleaseDate = reader["ReleaseDate"].ToString(),
+                                ReleaseDate = reader.GetDateTime(reader.GetOrdinal("ReleaseDate")),
                                 Format = reader["Format"].ToString(),
                                 ISBN = reader.IsDBNull(reader.GetOrdinal("ISBN")) ? 0L : Convert.ToInt64(reader["ISBN"]),
                                 Weight = reader.IsDBNull(reader.GetOrdinal("Weight")) ? 0.0f : Convert.ToSingle(reader["Weight"]),
                                 Pages = reader.IsDBNull(reader.GetOrdinal("Pages")) ? 0 : Convert.ToInt32(reader["Pages"]),
                                 Description = reader["Description"].ToString(),
-                                Stars = reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
                                 Type = reader["Type"].ToString(),
-                                Reviews = reader["Reviews"] == DBNull.Value ? new List<string>() : ((string[])reader["Reviews"]).ToList(),
                             });
                         }
                     }
@@ -78,15 +76,13 @@ namespace BlazorApp.Services
                                 Price = reader.IsDBNull(reader.GetOrdinal("Price")) ? 0.0m : Convert.ToDecimal(reader["Price"]),
                                 ImagePath = reader["ImagePath"].ToString(),
                                 Language = reader["Language"].ToString(),
-                                ReleaseDate = reader["ReleaseDate"].ToString(),
+                                ReleaseDate = reader.GetDateTime(reader.GetOrdinal("ReleaseDate")),
                                 Format = reader["Format"].ToString(),
                                 ISBN = reader.IsDBNull(reader.GetOrdinal("ISBN")) ? 0L : Convert.ToInt64(reader["ISBN"]),
                                 Weight = reader.IsDBNull(reader.GetOrdinal("Weight")) ? 0.0f : Convert.ToSingle(reader["Weight"]),
                                 Pages = reader.IsDBNull(reader.GetOrdinal("Pages")) ? 0 : Convert.ToInt32(reader["Pages"]),
                                 Description = reader["Description"].ToString(),
-                                Stars = reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
                                 Type = reader["Type"].ToString(),
-                                Reviews = reader["Reviews"] == DBNull.Value ? new List<string>() : ((string[])reader["Reviews"]).ToList(),
                             });
                         }
                     }
@@ -118,15 +114,13 @@ namespace BlazorApp.Services
                                 Price = reader.IsDBNull(reader.GetOrdinal("Price")) ? 0.0m : Convert.ToDecimal(reader["Price"]),
                                 ImagePath = reader["ImagePath"].ToString(),
                                 Language = reader["Language"].ToString(),
-                                ReleaseDate = reader["ReleaseDate"].ToString(),
+                                ReleaseDate = reader.IsDBNull(reader.GetOrdinal("ReleaseDate")) ? DateTime.MinValue : reader.GetDateTime(reader.GetOrdinal("ReleaseDate")),
                                 Format = reader["Format"].ToString(),
                                 ISBN = reader.IsDBNull(reader.GetOrdinal("ISBN")) ? 0L : Convert.ToInt64(reader["ISBN"]),
                                 Weight = reader.IsDBNull(reader.GetOrdinal("Weight")) ? 0.0f : Convert.ToSingle(reader["Weight"]),
                                 Pages = reader.IsDBNull(reader.GetOrdinal("Pages")) ? 0 : Convert.ToInt32(reader["Pages"]),
                                 Description = reader["Description"].ToString(),
-                                Stars = reader.IsDBNull(reader.GetOrdinal("Stars")) ? 0.0f : Convert.ToSingle(reader["Stars"]),
                                 Type = reader["Type"].ToString(),
-                                Reviews = reader["Reviews"] == DBNull.Value ? new List<string>() : ((string[])reader["Reviews"]).ToList(),
                             };
                         }
                     }
@@ -134,6 +128,35 @@ namespace BlazorApp.Services
             }
             return null;
         }
+
+
+        public List<UsedBooks> GetFirstTwelveBooks()
+        {
+            List<UsedBooks> books = new List<UsedBooks>();
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var sql = "SELECT * FROM Books LIMIT 12";
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            books.Add(new UsedBooks
+                            {
+                                Id = Convert.ToInt32(reader["Id"]),
+                                Title = reader["Title"].ToString(),
+                                Price = reader.IsDBNull(reader.GetOrdinal("Price")) ? 0.0m : Convert.ToDecimal(reader["Price"]),
+                                ImagePath = reader["ImagePath"].ToString()
+                            });
+                        }
+                    }
+                }
+            }
+            return books;
+        }
+
     }
 }
 

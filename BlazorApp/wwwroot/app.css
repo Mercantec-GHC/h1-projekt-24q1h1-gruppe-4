@@ -89,4 +89,752 @@ h1:focus {
 
 
 
+.ProductDetail {
+    width: 100%; /* Take the full width of the parent */
+    display: flex; /* Use flexbox for layout */
+    flex-direction: column; /* Stack children vertically */
+    align-items: flex-start; /* Align children to the start of the cross axis */
+    box-sizing: border-box; /* Include padding and border in the width calculation */
+    padding: 20px; /* Add padding around the content */
+    overflow: auto; /* Hide overflowing content or set to 'auto' if scrolling is needed */
+}
+
+
+.SearchLogoButton,
+.Star1,
+.Star2,
+.Star3,
+.Star4,
+.Star5,
+.ArrowRightLogo {
+    width: 20px;
+    height: 20px;
+    position: relative
+}
+
+.MiddleNavRightIcons {
+    justify-content: flex-start;
+    align-items: center;
+    gap: 24px;
+    display: flex
+}
+
+.ShoppingCartButton,
+.FavoritesButton,
+.UserButton,
+.GooglePlayLogo,
+.AppleStoreLogo {
+    width: 32px;
+    height: 32px;
+    position: relative
+}
+
+.Frame18 {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    left: 16px;
+    top: -4px;
+    background: white;
+    border-radius: 100px;
+    border: 1.50px #1B6392 solid;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 10px;
+    display: inline-flex
+}
+
+.BottomNavContainer {
+    width: 1920px;
+    padding-left: 300px;
+    padding-right: 300px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+    background: white;
+    box-shadow: 0px -1px 0px #E4E7E9 inset;
+    justify-content: space-between;
+    align-items: center;
+    display: inline-flex
+}
+
+.BottomNavLeftContainer {
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    display: flex
+}
+
+.AllCategoryContainer {
+    width: 154px;
+    height: 48px;
+    position: relative
+}
+
+.AllCategoryButton {
+    padding-left: 24px;
+    padding-right: 24px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    left: 0px;
+    top: 0px;
+    position: absolute;
+    background: #F2F4F5;
+    border-radius: 2px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    display: inline-flex
+}
+
+.AllCategory,
+.DhlPackageShop,
+.DhlHomeDelivery,
+.DhlExpressDelivery,
+.DhlGlobalExport {
+    color: #191C1F;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 500;
+    line-height: 20px;
+    word-wrap: break-word
+}
+
+.Caretdown,
+.Facebook,
+.Twitter {
+    width: 16px;
+    height: 16px;
+    position: relative
+}
+
+.BuyBooksButton,
+.SellBooksButton,
+.ContactUsButton,
+.FaqSButton {
+    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+    display: flex
+}
+
+.BuyBooksLogo,
+.SellBooksLogo,
+.ContactUsLogo,
+.FaqSLogo,
+.Heart,
+.ShoppingCartLogo,
+.CopyLogo,
+.MedalSymbol,
+.TruckSymbol,
+.HandshakeSymbol,
+.HeadphonesSymbol,
+.CreditcardSymbol {
+    width: 24px;
+    height: 24px;
+    position: relative
+}
+
+.CallNowLogo {
+    width: 28px;
+    height: 28px;
+    position: relative
+}
+
+.BookDetailGodContainer {
+    padding-top: 32px;
+    padding-bottom: 72px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 56px;
+    display: inline-flex;
+    margin-bottom: 24px;
+}
+
+.CurrentBookImageContainer {
+    width: 616px; /* Fixed width for the container */
+    height: 568px; /* Fixed height for the container */
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    overflow: hidden; /* Ensures nothing spills out */
+    margin-bottom: 24px; /* Space below the image container */
+}
+
+.CurrentBookImage {
+    height: 100%; /* Full height of the container */
+    width: auto; /* Width is auto, but it won't exceed the bounds of the container due to flex settings */
+    max-width: 100%; /* Ensure the width does not exceed the container's width */
+    object-fit: contain; /* Image will be contained with its aspect ratio */
+    border: 1px #E4E7E9 solid;
+}
+
+.BookDetailContainer,
+.FooterLeftInformation {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 24px;
+    display: inline-flex
+}
+
+.BookDetailRightContainer,
+.BookInformation2Container {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+    display: flex
+}
+
+.BookTitleStars,
+.BookInformation1Container,
+.PopularAuthorsSubContainer {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+    display: flex
+}
+
+.Stars {
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 6px;
+    display: inline-flex
+}
+
+.Star {
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 2px;
+    display: flex
+}
+
+.RatingAndFedbackNumber {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+    gap: 5px; /* Adjust the space between the rating and feedback */
+}
+
+.StarSellerRating {
+    color: #191C1F;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 600;
+    line-height: 20px;
+    word-wrap: break-word
+}
+
+.UserFeedback {
+    color: #5F6C72;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 400;
+    line-height: 20px;
+    word-wrap: break-word
+}
+
+.TitleOfTheBook {
+    width: 648px;
+    color: #191C1F;
+    font-size: 20px;
+    font-family: Public Sans;
+    font-weight: 400;
+    line-height: 28px;
+    word-wrap: break-word
+}
+
+.BookInformation1Row1,
+.BookInformation1Row2,
+.BookInformation2Row1,
+.BookInformation2Row2 {
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 24px;
+    display: inline-flex
+}
+
+.Author,
+.RelaseDate,
+.Isbn,
+.Category {
+    width: 312px;
+    color: #5F6C72;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 400;
+    line-height: 20px;
+    word-wrap: break-word
+}
+
+.PriceContainer {
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    display: inline-flex
+}
+
+.Price {
+    justify-content: flex-start;
+    align-items: center;
+    gap: 4px;
+    display: flex
+}
+
+.Kr {
+    color: #2DA5F3;
+    font-size: 24px;
+    font-family: Public Sans;
+    font-weight: 600;
+    line-height: 32px;
+    word-wrap: break-word
+}
+
+.Devider {
+    width: 100%; /* Full width */
+    height: 1px; /* Just one pixel high */
+    border: none; /* If you want a line, use 'border-top' or 'border-bottom' */
+    background-color: #E4E7E9; /* Use background color for the line */
+}
+
+.Color,
+.Size,
+.Size,
+.Size,
+.RecommendedBook1Content,
+.RecommendedBook2Content,
+.RecommendedBook3Content,
+.RecommendedBook4Content,
+.RecommendedBook5Content,
+.RecommendedBook6Content,
+.RecommendedBook7Content,
+.RecommendedBook8Content,
+.RecommendedBook9Content,
+.RecommendedBook10Content,
+.RecommendedBook11Content,
+.RecommendedBook12Content {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 8px;
+    display: inline-flex
+}
+
+.Format,
+.Weight,
+.Language,
+.Pages {
+    width: 312px;
+    color: #191C1F;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 400;
+    line-height: 20px;
+    word-wrap: break-word
+}
+
+.AddToCartJoinBookclubContainer {
+    padding-top: 12px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+    display: inline-flex
+}
+
+.AddToCartButton {
+    height: 56px;
+    padding-left: 32px;
+    padding-right: 32px;
+    background: #FA8232;
+    border-radius: 3px;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    display: flex
+}
+
+.Label1 {
+    color: white;
+    font-size: 16px;
+    font-family: Public Sans;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 56px;
+    letter-spacing: 0.19px;
+    word-wrap: break-word
+}
+
+.JoinBookclubButton {
+    padding-left: 32px;
+    padding-right: 32px;
+    border-radius: 3px;
+    border: 2px #FA8232 solid;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    display: flex
+}
+
+.Label2 {
+    color: darkorange;
+    font-size: 16px;
+    font-family: Public Sans;
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 56px;
+    letter-spacing: 0.19px;
+    word-wrap: break-word
+}
+
+.AddToFavoritesShareProductContainer {
+    clear: both;
+    width: 648px;
+    padding-bottom: 8px;
+    justify-content: space-between;
+    align-items: center;
+    display: inline-flex
+}
+
+.AddToFavoritesButton {
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 24px;
+    display: flex
+}
+
+.AddToFavorites {
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    display: flex
+}
+
+.AddToFavorites,
+.ShareProduct {
+    color: #475156;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 400;
+    line-height: 20px;
+    word-wrap: break-word
+}
+
+.ShareProduct,
+.SocialIcon {
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    display: flex
+}
+
+.SafeCheckoutInformationContainer {
+    clear: both;
+    padding: 20px;
+    background: white;
+    border-radius: 3px;
+    border: 1px #E4E7E9 solid;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 12px;
+    display: flex
+}
+
+.GuaranteeSafeCheckout {
+    width: 608px;
+    color: #191C1F;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 400;
+    line-height: 20px;
+    word-wrap: break-word
+}
+
+.PaymentMethod {
+    width: 312px;
+    height: 18px
+}
+
+.BookInformation3Container {
+    max-width: 1320px; /* Max-width for a controlled layout */
+    width: 100%; /* Responsive to parent container */
+    margin: 0 auto; /* Center the container */
+    display: flex;
+    flex-direction: column;
+    gap: 40px; /* Spacing between child elements */
+    border: 1px solid #E4E7E9; /* Add border around the container */
+    padding: 10px; /* Add padding for spacing */
+}
+
+.BookInformation3ToggleBar {
+    width: 100%;
+    height: 56px;
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center; /* Center the buttons vertically */
+    position: relative;
+    margin-top: -10px;
+    margin-bottom: 10px; /* Adjust margin to reduce the gap */
+}
+
+.Devider2 {
+    width: calc(100% + 20px); /* Extend width to compensate for negative margin */
+    height: 1px; /* Just one pixel high */
+    border: none; /* If you want a line, use 'border-top' or 'border-bottom' */
+    background-color: #E4E7E9; /* Use background color for the line */
+    margin-top: -50px; /* Adjust margin to reduce the gap */
+    margin-left: -10px; /* Offset the extra width to the left */
+}
+
+.BookInformation3SubContainer {
+    height: 240px; /* Adjust the height as needed */
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 24px;
+    display: inline-flex
+}
+
+.DescriptionButton {
+    padding: 10px 20px; /* Consistent padding */
+    margin-right: 10px; /* Adds spacing between buttons */
+    display: inline-block; /* Aligns buttons in a line */
+    border-radius: 2px;
+}
+
+.SellersInformationButton {
+    padding: 10px 20px; /* Consistent padding */
+    margin-right: 10px; /* Adds spacing between buttons */
+    display: inline-block; /* Aligns buttons in a line */
+    border-radius: 2px;
+}
+
+.SellersInformation,
+.Description,
+.Reviews {
+    color: #5F6C72;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 500;
+    text-transform: uppercase;
+    line-height: 20px;
+    word-wrap: break-word
+}
+
+.ReviewsButton {
+    padding: 10px 20px; /* Consistent padding */
+    margin-right: 10px; /* Adds spacing between buttons */
+    display: inline-block; /* Aligns buttons in a line */
+    border-radius: 2px;
+}
+
+.DescriptionContainer,
+.TopCategoryContainer,
+.QuickLinksContainer {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 12px;
+    display: inline-flex
+}
+
+.DescriptionHeader {
+    width: 616px;
+    color: #191C1F;
+    font-size: 16px;
+    font-family: Public Sans;
+    font-weight: 600;
+    line-height: 24px;
+    word-wrap: break-word
+}
+
+.DescriptionContent {
+    width: 576px;
+    color: #5F6C72;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 400;
+    line-height: 20px;
+    word-wrap: break-word
+}
+
+.FeatureContainer {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 16px;
+    display: inline-flex
+}
+
+.Feature {
+    width: 280px;
+    color: #191C1F;
+    font-size: 16px;
+    font-family: Public Sans;
+    font-weight: 600;
+    line-height: 24px;
+    word-wrap: break-word
+}
+
+.FeatureSubContainer,
+.ShippingInformationSubContainer,
+.ContactUsInfo,
+.DownloadAppSubContainer {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 12px;
+    display: flex
+}
+
+.DayReturnPolicyContainer,
+.FreeShippingFastedDeliveryContainer,
+.MoneyBackGuaranteeContainer,
+.CustomerSupportContainer,
+.SecurePaymentMethodContainer,
+.CompanyLogo {
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    display: inline-flex
+}
+
+.Free1YearWarranty,
+.FreeShippingFastedDelivery,
+.MoneyBackGuarantee,
+.CustomerSupport,
+.SecurePaymentMethod {
+    width: 248px;
+    color: #191C1F;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 400;
+    line-height: 20px;
+    word-wrap: break-word
+}
+
+.Devider3 {
+    height: 90%; /* Full width */
+    width: 1px; /* Just one pixel high */
+    border: none; /* If you want a line, use 'border-top' or 'border-bottom' */
+    background-color: #E4E7E9; /* Use background color for the line */
+    position: relative;
+    left: -25px;
+}
+
+.ShippingInformationContainer {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 20px;
+    display: inline-flex
+}
+
+.ShippingInformation {
+    width: 272px;
+    color: #191C1F;
+    font-size: 16px;
+    font-family: Public Sans;
+    font-weight: 600;
+    line-height: 24px;
+    word-wrap: break-word
+}
+
+.DhlPackageShop,
+.DhlHomeDelivery,
+.DhlExpressDelivery,
+.DhlGlobalExport {
+    display: flex;
+    justify-content: space-between; /* This spreads out the shipping info and the details */
+    gap: 1rem; /* Provides a responsive gap */
+}
+
+.RecommendedBooks {
+    color: black;
+    font-size: 16px; /* Adjusted for header visibility */
+    font-weight: bold; /* Bold font weight for header emphasis */
+    text-align: center;
+    margin-top: 130px; /* Space from the previous content */
+    margin-bottom: 35px; /* Space before the content that follows */
+    width: 100%; /* Only as wide as necessary for the text */
+    /* Removed padding, background color, and border for header style */
+}
+
+.RecommendedBooksContainer {
+    display: flex;
+    flex-wrap: wrap; /* This allows the items to wrap into the next line */
+    justify-content: space-around; /* This will space out the items evenly */
+    gap: 24px; /* Space between each book */
+}
+
+.RecommendedBooksSubContainer {
+    display: flex;
+    justify-content: center;
+    gap: 24px; /* Space between each book in a row */
+}
+
+.RecommendedBookContainer {
+    width: 310px; /* Set a fixed width */
+    height: 115px; /* Set a fixed height */
+    padding: 12px;
+    background: white;
+    border-radius: 3px;
+    border: 1px #E4E7E9 solid;
+    display: flex;
+    align-items: center; /* Vertically center the content */
+    justify-content: flex-start; /* Align content to the left */
+}
+
+.RecommendedBookImage {
+    width: 70px;
+    height: 90px;
+    margin-right: 12px;
+}
+
+.Price {
+    flex-grow: 1; /* Allow the price to take up remaining space */
+    display: flex;
+    flex-direction: column; /* Stack price and book title vertically */
+    justify-content: center; /* Vertically center the content */
+    align-items: flex-start; /* Align content to the left */
+    color: #2DA5F3;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 600;
+    line-height: 25px;
+    word-wrap: break-word
+}
+
+.RecommendedBook1,
+.RecommendedBook1,
+.RecommendedBook1,
+.RecommendedBook1,
+.RecommendedBook1,
+.RecommendedBook1,
+.RecommendedBook1,
+.RecommendedBook1,
+.RecommendedBook1,
+.RecommendedBook1,
+.RecommendedBook1,
+.RecommendedBook1 {
+    color: #2DA5F3;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 600;
+    line-height: 20px;
+    word-wrap: break-word
+}
+
+.BookTitle {
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 400;
+    line-height: 20px;
+    color: #191C1F;
+}
+
+
+
+
+
+
 

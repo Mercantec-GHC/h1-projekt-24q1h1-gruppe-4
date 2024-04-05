@@ -1,37 +1,196 @@
 ﻿@page "/bookpage/{productId:int}"
 @inject DatabaseService databaseService
+@inject NavigationManager navManager
 
-@if (ProductToShow == null)
+@if (ProductToShow != null)
 {
-    <p>Loading book details...</p>
+    <div class="ProductDetail">
+        <div class="BookDetailGodContainer">
+        <div class="CurrentBookImageContainer">
+            <img class="CurrentBookImage" src="@ProductToShow.ImagePath" alt="Book Image">
+        </div>
+            <div class="BookDetailContainer">
+                <div class="BookDetailRightContainer">
+                    <div class="BookTitleStars">
+                        <div class="Stars">
+                                <!-- Dynamically generate star images based on rating -->
+                        </div>
+
+                        <div class="RatingAndFedbackNumber">
+                            <div class="StarSellerRating">4.7 Star Seller Rating</div>
+                            <div class="UserFedback">(11 User Feedback)</div>
+                        </div>
+                        <h2 class="TitleOfTheBook">@ProductToShow.Title</h2>
+                    
+                    </div>
+                    <div class="BookInformation1Container">
+                        <div class="BookInformation1Row1">
+                            <div class="Author"> Author: @ProductToShow.Author</div>
+                            <div class="RelaseDate"> Release Date: @ProductToShow.ReleaseDate.ToString("dd/MM/yyyy")</div>
+                        </div>
+                        <div class="BookInformation1Row2">
+                            <div class="Isbn"> ISBN: @ProductToShow.ISBN</div>
+                            <div class="Category"> Category: @ProductToShow.Category</div>
+                        </div>
+                </div>
+                    </div>
+                    <div class="PriceContainer">
+                        <div class="Price">
+                            <div class="Kr"> Price: @ProductToShow.Price.ToString("C")</div>
+                        </div>
+                    </div>
+            <div class="Devider"></div>
+                    <div class="BookInformation2Container">
+                        <div class="BookInformation2Row1">
+                            <div class="Format"> Format: @ProductToShow.Format</div>
+                            <div class="Weight"> Weight: @ProductToShow.Weight</div>
+                        </div>
+                        <div class="BookInformation2Row2">
+                            <div class="Language"> Language: @ProductToShow.Language</div>
+                            <div class="Pages"> Pages: @ProductToShow.Pages</div>
+                        </div>
+                    </div>
+
+                    <div class="AddToCartJoinBookclubContainer">
+                        <div class="AddToCartButton">
+                            <div class="Label1">ADD TO CARD</div>
+                        <img class="ShoppingCartLogo" src="/images/ShoppingCartLogo.svg">
+                        </div>
+                        <div class="JoinBookclubButton">
+                            <div class="Label2">JOIN BOOKCLUB</div>
+                        </div>
+                    </div>
+
+                    <div class="AddToFavoritesShareProductContainer">
+                        <div class="AddToFavoritesButton">
+                            <div class="AddToFavorites">
+                                <img class="Heart" src="/images/HeartLogo.svg">
+                                <div class="AddToFavorites">Add to favorites</div>
+                            </div>
+                        </div>
+                        <div class="ShareProduct">
+                            <div class="ShareProduct">Share product:</div>
+                            <div class="SocialIcon">
+                                <img class="CopyLogo" src="/images/CopyLogo.svg">   
+                                <img class="Facebook" src="/images/FacebookLogo.svg">
+                                <img class="Twitter" src="/images/TwitterLogo.svg">
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="SafeCheckoutInformationContainer">
+                        <div class="GuaranteeSafeCheckout">100% Guarantee Safe Checkout</div>
+                        <img class="PaymentMethod" src="/images/PaymentMethodLogo.svg">
+                    </div>
+            </div>
+        </div>
+
+        <div class="BookInformation3Container">
+            <div class="BookInformation3ToggleBar">
+                <div class="DescriptionButton">
+                    <div class="Description">Description</div>
+                </div>
+                <div class="SellersInformationButton">
+                    <div class="SellersInformation">Sellers Information</div>
+                </div>
+                <div class="ReviewsButton">
+                    <div class="Reviews">Reviews</div>
+                </div>
+            </div>
+
+            <div class="Devider2"></div>
+
+            <div class="BookInformation3SubContainer">
+                <div class="DescriptionContainer">
+                    <div class="DescriptionHeader">Description</div>
+                    <div class="DescriptionContent"> @ProductToShow.Description</div>
+                </div>
+
+                <div class="FeatureContainer">
+                    <div class="Feature">Feature</div>
+                    <div class="FeatureSubContainer">
+                        <div class="DayReturnPolicyContainer">
+                            <div class="MedalSymbol">
+                                <img src="/images/MedalSymbol.svg">
+                            </div>
+                            <div class="Free1YearWarranty">30 Day return policy</div>
+                        </div>
+                        <div class="FreeShippingFastedDeliveryContainer">
+                            <div class="TruckSymbol">
+                                <img src="/images/TruckSymbol.svg">
+                            </div>
+                            <div class="FreeShippingFastedDelivery">Free Shipping & Fast Delivery</div>
+                        </div>
+                        <div class="MoneyBackGuaranteeContainer">
+                            <div class="HandshakeSymbol">
+                                <img src="/images/HandshakeSymbol.svg">
+                            </div>
+                            <div class="MoneyBackGuarantee">100% Money-back guarantee</div>
+                        </div>
+                        <div class="CustomerSupportContainer">
+                            <div class="HeadphonesSymbol">
+                                <img src="/images/HeadphonesSymbol.svg">
+                            </div>
+                            <div class="CustomerSupport">24/7 Customer support</div>
+                        </div>
+                        <div class="SecurePaymentMethodContainer">
+                            <div class="CreditcardSymbol">
+                                <img src="/images/CreditCardSymbol.svg">
+                            </div>
+                            <div class="SecurePaymentMethod">Secure payment method</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="Devider3"></div>
+
+                <div class="ShippingInformationContainer">
+                    <div class="ShippingInformation">Shipping Information</div>
+                    <div class="ShippingInformationSubContainer">
+                        <div class="DhlPackageShop">
+                            <div class="DhlPackageShop">DHL Package Shop: </div>
+                            <div class="DhlPackageShop"> 2 - 4 days, free shipping</div>
+                        </div>
+                        <div class="DhlHomeDelivery">
+                            <div class="DhlHomeDelivery">DHL Home Delivery: </div>
+                            <div class="DhlHomeDelivery"> 2-3 days, kr. 19.00</div>
+                        </div>
+                        <div class="DhlExpressDelivery">
+                            <div class="DhlExpressDelivery">DHL Express Delivery: </div>
+                            <div class="DhlExpressDelivery"> 1 - 2 days, kr. 49.00</div>
+                        </div>
+                        <div class="DhlGlobalExport">
+                            <div class="DhlGlobalExport">DHL Global Export: </div>
+                            <div class="DhlGlobalExport"> 4 - 10 days, kr. 89.00</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="RecommendedBooks">Recommended Books</div>
+
+        @if (firstTwelveBooks != null && firstTwelveBooks.Count > 0)
+        {
+            <div class="RecommendedBooksContainer">
+                @foreach (var book in firstTwelveBooks)
+                {
+                    <div class="RecommendedBookContainer" @onclick="() => NavigateToBook(book.Id)">
+                        <img class="RecommendedBookImage" src="@book.ImagePath">
+                        <div class="RecommendedBookContent">
+                            <div class="BookTitle">@book.Title</div>
+                            <div class="Price">Kr. @book.Price.ToString("C")</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+
+    </div>
 }
 else
 {
-    <div>
-        <div class="book-item">
-            <img src="@ProductToShow.ImagePath" alt="Book image" class="book-image" />
-            <div class="book-details">
-                <h1>@ProductToShow.Title</h1>
-                <p>Description: @ProductToShow.Description</p>
-                <p>Author: @ProductToShow.Author</p>
-                <p>Price: kr. @ProductToShow.Price</p>
-                <p>Language: @ProductToShow.Language</p>
-                <p>Release Date: @ProductToShow.ReleaseDate</p>
-                <p>ISBN: @ProductToShow.ISBN</p>
-                <p>Pages: @ProductToShow.Pages</p>
-                <p>Category: @ProductToShow.Category</p>
-                <p>Condition: @ProductToShow.Condition</p>
-                @if (ProductToShow.Reviews != null && ProductToShow.Reviews.Count > 0)
-                {
-                    <h3>Reviews:</h3>
-                    @foreach (var review in ProductToShow.Reviews)
-                    {
-                        <p>@review</p>
-                    }
-                }
-            </div>
-        </div>
-    </div>
+    <p>Book details are currently loading...</p>
 }
 
 @code {
@@ -39,12 +198,34 @@ else
     public int productId { get; set; }
 
     private UsedBooks ProductToShow;
+    private List<UsedBooks> firstTwelveBooks;
 
     protected override void OnInitialized()
     {
-        ProductToShow = databaseService.GetUsedBookById(productId);
+        firstTwelveBooks = databaseService.GetFirstTwelveBooks();
     }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        LoadBookDetails(productId);
+    }
+
+    private void LoadBookDetails(int productId)
+    {
+        ProductToShow = databaseService.GetUsedBookById(productId);
+        StateHasChanged();
+    }
+
+    void NavigateToBook(int bookId)
+    {
+        navManager.NavigateTo($"/bookpage/{bookId}");
+    }
+
 }
+
+
+
 
 
 
