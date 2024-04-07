@@ -1,19 +1,23 @@
-.link {
+display: flex;
+overflow-x: auto; /* Enable horizontal scrolling */
+overflow-y: hidden; /* Hide vertical scrollbar */
+width: 220px; /* Set a fixed width to contain two boxes */
+flex-wrap: nowrap; /* Prevent wrapping of flex items */ .link {
     font-size: 1.3rem;
     text-decoration: none;
-    color:white;
+    color: white;
 }
 
 header {
     background-color: #f7f7f7;
     border-radius: 8px;
-    padding: 20px;
     padding-bottom 60px;
     text-align: center;
 }
 
-container {
+home_container {
     margin-top: 20px;
+    width: 100%;
 }
 
 .content_center {
@@ -59,14 +63,19 @@ container {
 
 
 .book_scroll_container {
-    overflow-x: auto; /* Enable horizontal scrollbar */
-    overflow-y: hidden;
-    text-align: right; /* Align content to the right */
-    justify-content: flex-end; /* Align content to the right */
+}
+.white_space_wrap {
+    /* white-space:initial;*/
+    margin-right: auto; /* Push boxes to the right */
+
 }
 
 .book_scroll_content {
-    /* Add styles for your content */
-    width: 2100px; /* For demonstration purpose, adjust as per your content */
-    justify-content: center; /* Horizontally center the flex items */
+    margin: 0 auto; /* Center the container horizontally */
+
+    display: flex;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    width: 900px; /* Set a fixed width to contain two boxes */
+    flex-wrap: nowrap; /* Prevent wrapping of flex items */
 }

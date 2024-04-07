@@ -8,20 +8,20 @@
     <title>Buy & Sell Used Books</title>
 
     <header>
-        <h1>[Book store name]</h1>
+    <h1>Book harbor</h1>
         <p>Buy & Sell Used Books</p>
         <a href="#" class="shiny-button link">Get Started</a>
     </header>
     <br>
 <br>
-    <div class="container">
+<div class="home_container">
         <section id="mission">
             <h2>Our Mission</h2>
-            <p>At [Book store name], we believe in giving books a second life and connecting readers with their next favorite story. Whether you're looking to declutter your shelves or discover hidden literary gems, we're here to make it happen.</p>
+        <p>At Book harbor, we belive that every book deserves a home, and a chance to have their dust brushed off, and given new life in the hands of book enjoyers across the world.</p>
         </section>
         <section id="what-sets-us-apart">
             <h2>What Sets Us Apart</h2>
-            <p>With a diverse selection of genres, a user-friendly interface, and a supportive community of book lovers, Your Book Haven provides the perfect platform for buying and selling used books.</p>
+        <p>With our large community of book lovers, who activly sell and buy books there is something for everybody, everything from fantasy to philosophy there is always something new and exciting to find and discover.</p>
         </section>
         <section id="how-it-works">
             <h2>How It Works</h2>
@@ -39,18 +39,17 @@
             </ol>
             <p>Join us today and give old books a new life!</p>
         </section>
-        <h1>Latest books</h1>
+    <h1 style="text-align: center;">Latest books</h1>
 
         <div class="book_scroll_container">
-    <div class="book_scroll_content">
-        <div class="books-container">
+        <div class="book_scroll_content">
         @if (allProducts != null) @foreach (var book in allProducts)
         {
-            <div class="book-card" @onclick="@( () => navManager.NavigateTo($"/bookpage/{book.Id}") )">
+                    <div class="book-card" @onclick="@( () => navManager.NavigateTo($"/bookpage/{book.Id}") )">
                 <div class="book-item">
                     <img src="@book.ImagePath" alt="Book image" class="book-image" />
-                    <div class="book-details">
-                        <h3>@book.Title</h3>
+                            <div class="book-details">
+                                <h3 class="white_space_wrap">@book.Title</h3>
                         <p>@book.Author</p>
                         <p>kr. @book.Price</p>
                     </div>
@@ -59,7 +58,9 @@
         }
     </div>
     </div>
-    </div>
+
+    <a href="/terms" >Terms and conditions</a>
+
 </div>
 
 
