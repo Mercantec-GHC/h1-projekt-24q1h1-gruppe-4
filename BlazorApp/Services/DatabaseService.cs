@@ -136,6 +136,36 @@ namespace BlazorApp.Services
             return null;
         }
 
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
         public void AddBook(Book book)
         {
             using (var connection = new NpgsqlConnection(connectionString))
