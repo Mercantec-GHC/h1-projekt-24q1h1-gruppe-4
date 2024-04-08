@@ -1,0 +1,303 @@
+﻿@page "/UpdateDelete"
+@inject DatabaseService databaseService
+@inject NavigationManager navManager
+
+<PageTitle>Update and Delete Book</PageTitle>
+
+<h3>Update and Delete Book</h3>
+
+@if (isAuthenticated)
+{
+
+    @if (allUserBooks != null)
+    {
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>ImagePath</th>
+                    <th>Language</th>
+                    <th>ReleaseDate</th>
+                    <th>Format</th>
+                    <th>ISBN</th>
+                    <th>Weight</th>
+                    <th>Pages</th>
+                    <th>Condition</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in allUserBooks)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="text" @bind="editingItem.Title" />
+                            }
+                            else
+                            {
+                                @item.Title
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="text" @bind="editingItem.Description" />
+                            }
+                            else
+                            {
+                                @item.Description
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="text" @bind="editingItem.Author" />
+                            }
+                            else
+                            {
+                                @item.Author
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="text" @bind="editingItem.Category" />
+                            }
+                            else
+                            {
+                                @item.Category
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="text" @bind="editingItem.Price" />
+                            }
+                            else
+                            {
+                                @item.Price
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="text" @bind="editingItem.ImagePath" />
+                            }
+                            else
+                            {
+                                @item.ImagePath
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="text" @bind="editingItem.Language" />
+                            }
+                            else
+                            {
+                                @item.Language
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="date" @bind="editingItem.ReleaseDate" />
+                            }
+                            else
+                            {
+                                @item.ReleaseDate
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="text" @bind="editingItem.Format" />
+                            }
+                            else
+                            {
+                                @item.Format
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="text" @bind="editingItem.ISBN" />
+                            }
+                            else
+                            {
+                                @item.ISBN
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="text" @bind="editingItem.Weight" />
+                            }
+                            else
+                            {
+                                @item.Weight
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="number" @bind="editingItem.Pages" />
+                            }
+                            else
+                            {
+                                @item.Pages
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <input type="text" @bind="editingItem.Condition" />
+                            }
+                            else
+                            {
+                                @item.Condition
+                            }
+                        </td>
+                        <td>
+                            @if (editingItem != null && editingItem.Id == item.Id)
+                            {
+                                <button @onclick="SaveChanges">Save Changes</button>
+                            }
+                            else
+                            {
+                                <button @onclick="() => EditItem(item)">Edit</button>
+                                <button @onclick="() => DeleteItem(item)">Delete</button>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    }
+    else
+    {
+        <p>No books found.</p>
+    }
+}
+else
+{
+    <!-- Login form -->
+    <div>
+        <label for="UserId">userID:</label>
+        <input type="number" id="UserId" @bind="@UserId" />
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" @bind="@password" />
+
+        <button @onclick="Login" class="btn btn-primary">Login</button>
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <p class="text-danger">@errorMessage</p>
+        }
+    </div>
+}
+
+@code {
+    public Book UserBooks { get; set; }
+    public List<Book> allUserBooks { get; set; }
+
+    private bool isAuthenticated = false;
+    private int UserId;
+    private string password;
+    private string errorMessage;
+    private Book editingItem;
+
+    private async Task Login()
+    {
+        isAuthenticated = await databaseService.ValidateUserAsync(UserId, password);
+
+        if (isAuthenticated)
+        {
+            LoadBooksFromDatabase(UserId);
+        }
+        else
+        {
+            errorMessage = "Invalid Username or password. Please try again.";
+        }
+    }
+
+    private void LoadBooksFromDatabase(int userId)
+    {
+        allUserBooks = databaseService.GetAllUserBooks(userId);
+    }
+
+    void EditItem(Book item)
+    {
+        editingItem = new Book
+            {
+                Id = item.Id,
+                Title = item.Title,
+                Description = item.Description,
+                Author = item.Author,
+                Category = item.Category,
+                Price = item.Price,
+                ImagePath = item.ImagePath,
+                Language = item.Language,
+                ReleaseDate = item.ReleaseDate,
+                Format = item.Format,
+                ISBN = item.ISBN,
+                Weight = item.Weight,
+                Pages = item.Pages,
+                Condition = item.Condition
+            };
+    }
+
+    async Task DeleteItem(Book item)
+    {
+        await databaseService.DeleteBookAsync(item.Id);
+    }
+
+    async Task SaveChanges()
+    {
+        Book itemToUpdate = null;
+
+
+        foreach (var book in allUserBooks)
+        {
+
+            if (book.Id == editingItem.Id)
+            {
+
+                itemToUpdate = book;
+                break; // Stop loopet, da vi har fundet det, vi leder efter
+            }
+        }
+
+        if (itemToUpdate != null)
+        {
+            itemToUpdate.Id = editingItem.Id;
+            itemToUpdate.Title = editingItem.Title;
+            itemToUpdate.Description = editingItem.Description;
+            itemToUpdate.Author = editingItem.Author;
+            itemToUpdate.Category = editingItem.Category;
+            itemToUpdate.Price = editingItem.Price;
+            itemToUpdate.ImagePath = editingItem.ImagePath;
+            itemToUpdate.Language = editingItem.Language;
+            itemToUpdate.ReleaseDate = editingItem.ReleaseDate;
+            itemToUpdate.Format = editingItem.Format;
+            itemToUpdate.ISBN = editingItem.ISBN;
+            itemToUpdate.Weight = editingItem.Weight;
+            itemToUpdate.Pages = editingItem.Pages;
+            itemToUpdate.Condition = editingItem.Condition;
+
+            await databaseService.UpdateBookAsync(itemToUpdate);
+
+        }
+        editingItem = null;
+    }
+}
