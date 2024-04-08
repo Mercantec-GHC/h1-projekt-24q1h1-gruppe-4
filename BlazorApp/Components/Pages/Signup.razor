@@ -1,0 +1,66 @@
+﻿@inject DatabaseService databaseService
+@inject NavigationManager navManager
+
+@page "/signup"
+<link rel="stylesheet" href="home.css" />
+
+
+    <title>Sign up</title>
+
+<form method="post" @onsubmit="CreateUser">
+
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="Email" class="form-control" @bind="email"></input>
+    </div>
+
+    <div class="form-group">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="Name" class="form-control" @bind="name" />
+    </div>
+    
+    <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="text" id="password" name="Password" class="form-control" @bind="password" />
+    </div>
+    
+
+
+    <button type="submit" class="btn btn-primary">Sign up!</button>
+
+</form>
+
+<a href="/terms" >Terms and conditions</a>
+
+
+@code {
+
+    private string name;
+    private string password;
+    private string email;
+
+    protected override void OnInitialized()
+    {
+
+    }
+    void CreateUser()
+    {
+
+        // SQL query to check if the user already exists
+        string checkQuery = $"SELECT COUNT(*) FROM Users WHERE Username = '{name}' AND Email = '{email}'";
+
+        // Execute the query to check if the user already exists
+        int userCount = databaseService.ExecuteSql(checkQuery);
+
+        if (userCount==0)
+        if (name != "" && email!="" && password !="")
+            databaseService.ExecuteSql($"INSERT INTO Users (Username, Email,Password) VALUES ('{name}', '{email}', '{password}');");
+        
+        // NO LOGIN PAGE YET
+        navManager.NavigateTo($"/");
+    }
+}
+
+}
+
+

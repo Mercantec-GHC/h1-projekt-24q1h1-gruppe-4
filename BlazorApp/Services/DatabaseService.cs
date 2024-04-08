@@ -53,6 +53,28 @@ namespace BlazorApp.Services
             }
             return allProducts;
         }
+
+
+        public int ExecuteSql(string sql)
+        {
+
+            var rowsaffected = -1;
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    var result = command.ExecuteScalar();
+
+                    if (result != null && result != DBNull.Value)
+                    {
+                        rowsaffected = Convert.ToInt32(result);
+                    }
+                }
+            }
+            return rowsaffected;
+        }
+
         public List<UsedBooks> GetAllUsedBooks()
         {
             List<UsedBooks> allProducts = new List<UsedBooks>();
