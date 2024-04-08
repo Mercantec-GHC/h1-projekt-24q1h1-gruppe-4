@@ -2,6 +2,7 @@ using BlazorApp.Components;
 using BlazorApp.Services;
 using Domain_Models;
 using Microsoft.Extensions.Configuration;
+using System.Net.NetworkInformation;
 
 namespace BlazorApp
 {
@@ -15,6 +16,14 @@ namespace BlazorApp
             IConfiguration Configuration = builder.Configuration;
             var connectionString = Configuration.GetConnectionString("DefaultConnection") ?? Environment.GetEnvironmentVariable("DefaultConnection");
             builder.Services.AddSingleton<DatabaseService>(sp => new DatabaseService(connectionString));
+
+            // AuthenticationService Registration
+            // Register AuthenticationService as scoped to be consistent with Blazor server's scoped lifecycle for components.
+            builder.Services.AddScoped<AuthenticationService>();
+
+            // Register AppState
+            builder.Services.AddScoped<AppState>();
+
 
             // Add services to the container.
             builder.Services.AddRazorComponents()
@@ -42,3 +51,7 @@ namespace BlazorApp
         }
     }
 }
+
+
+
+

@@ -157,6 +157,49 @@ namespace BlazorApp.Services
             return books;
         }
 
+        public bool ValidateUser(string username, string password)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var sql = "SELECT COUNT(1) FROM Users WHERE Username = @Username AND Password = @Password";
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@Username", username);
+                    command.Parameters.AddWithValue("@Password", password);
+
+                    var result = (long)command.ExecuteScalar();
+                    return result > 0;
+                }
+            }
+        }
+        public User GetUserByUsername(string username)
+        {
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var sql = "SELECT UserID, Username, Email FROM Users WHERE Username = @Username";
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@Username", username);
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read())
+                        {
+                            return new User
+                            {
+                                UserID = Convert.ToInt32(reader["UserID"]),
+                                Username = reader["Username"].ToString(),
+                                Email = reader["Email"].ToString(),
+
+                            };
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
     }
 }
 
