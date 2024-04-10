@@ -23,7 +23,10 @@
         <label for="password">Password:</label>
         <input type="text" id="password" name="Password" class="form-control" @bind="password" />
     </div>
-    
+    @if (error != "")
+    {
+        <pre>@error</pre>
+    }
 
 
     <button type="submit" class="btn btn-primary">Sign up!</button>
@@ -35,10 +38,10 @@
 
 @code {
 
-    private string name;
-    private string password;
-    private string email;
-
+    private string name = "";
+    private string password = "";
+    private string email = "";
+    public string error = "";
     protected override void OnInitialized()
     {
 
@@ -48,19 +51,49 @@
 
         // SQL query to check if the user already exists
         string checkQuery = $"SELECT COUNT(*) FROM Users WHERE Username = '{name}' AND Email = '{email}'";
-
-        // Execute the query to check if the user already exists
+        error = "";
+        // Execute the query to check if the user already exists and do error checking
         int userCount = databaseService.ExecuteSql(checkQuery);
 
-        if (userCount==0)
-        if (name != "" && email!="" && password !="")
-            databaseService.ExecuteSql($"INSERT INTO Users (Username, Email,Password) VALUES ('{name}', '{email}', '{password}');");
-        
-        // NO LOGIN PAGE YET
-        navManager.NavigateTo($"/");
-    }
-}
+        if (userCount != 0) error = "Account already exists. \n";
 
+        if (password.Length < 7) error += "Password needs 7 or more characters. \n";
+        
+        if (name.Length < 4) error += "Name needs to be 4 or more characters. \n";
+        
+        if (!IsValidEmail(email)) error += "Not a valid email. \n";
+
+        if (error == ""){
+            databaseService.ExecuteSql($"INSERT INTO Users (Username, Email,Password) VALUES ('{name}', '{email}', '{password}');");
+            // NO LOGIN PAGE YET
+            navManager.NavigateTo($"/");
+        }
+    }
+
+
+    bool IsValidEmail(string strEmail)
+    {
+        if (string.IsNullOrEmpty(strEmail))
+            return false;
+
+        if (!strEmail.Contains("@"))
+            return false;
+
+        if (strEmail.Split('@').Length != 2)
+            return false;
+
+        int atIndex = strEmail.IndexOf("@");
+        if (!strEmail.Substring(atIndex).Contains("."))
+            return false;
+
+        if (strEmail[strEmail.Length - 1] == '.' || strEmail[strEmail.Length - 1] == '@')
+            return false;
+
+        if (strEmail[0] == '.' || strEmail[0] == '@')
+            return false;
+
+        return true;
+    }
 }
 
 
