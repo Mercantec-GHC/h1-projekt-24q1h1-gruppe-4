@@ -2,6 +2,7 @@
 using Npgsql;
 using System.Buffers;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain_Models
 {
@@ -31,8 +32,6 @@ namespace Domain_Models
         }
     }
 
-    
-
     public class UsedBooks
     {
         public int Id { get; set; }
@@ -43,14 +42,14 @@ namespace Domain_Models
         public decimal Price { get; set; }
         public string ImagePath { get; set; }
         public string Language { get; set; }
-        public DateTime ReleaseDate { get; set; } 
+        public DateTime ReleaseDate { get; set; }
         public string Format { get; set; }
         public long ISBN { get; set; }
         public float Weight { get; set; }
         public int Pages { get; set; }
         public string Description { get; set; }
-       // public float Stars { get; set; }
-       // public List<string> Reviews { get; set; }  
+        // public float Stars { get; set; }
+        // public List<string> Reviews { get; set; }  
         public string Type { get; set; }
 
         public UsedBooks(string Title, string Author, string Condition, string Category, decimal Price, string ImagePath, string Language, DateTime ReleaseDate, string Format, long ISBN, float Weight, int Pages, string Description, float Stars, string Type)
@@ -71,11 +70,29 @@ namespace Domain_Models
             // this.Stars = Stars;
             this.Type = Type;
         }
-        
+
         public UsedBooks()
         {
             // This is an empty constructor allowing for object initialization without parameters
         }
 
+    }
+
+    public class User
+    {
+        public int UserID { get; set; }
+        public string Username { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
+    }
+
+    public class LoginModel
+    {
+        [Required(ErrorMessage = "Username is required")]
+        public string Username { get; set; }
+
+        [Required(ErrorMessage = "Password is required")]
+        [DataType(DataType.Password)]
+        public string Password { get; set; }
     }
 }
