@@ -32,7 +32,10 @@
 
         <div class="text-danger">@errorMessage</div>
 
-        <button @onclick="Logout" class="btn btn-danger">Logout</button>
+        @if (AppState.LoggedIn)
+        {
+            <button @onclick="Logout" class="btn btn-danger">Logout</button>
+        }
 
     </div>
 </EditForm>
