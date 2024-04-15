@@ -55,7 +55,7 @@
         {
             Console.WriteLine($"Logging in {loginModel.Username}");
             AppState.LoggedIn = true;
-            navManager.NavigateTo("/");
+            navManager.NavigateTo("MainLayout");
         }
         else
         {

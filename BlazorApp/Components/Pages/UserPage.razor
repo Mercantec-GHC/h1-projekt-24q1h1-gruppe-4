@@ -1,0 +1,60 @@
+﻿@page "/UserPage"
+@inject DatabaseService databaseService
+@inject NavigationManager navManager
+
+<PageTitle>My Page</PageTitle>
+<div class="container-fluid">
+    <!-- Navigation bar -->
+    <div class="row">
+        <div class="col-md-12 bg-light p-3">
+            <h4>Navigation</h4>
+            <button class="btn btn-primary mr-2" @onclick="GoToProfile">Min Profil</button>
+            <button class="btn btn-primary mr-2" @onclick="GoToAddBooks">Tilføj Bøger</button>
+            <button class="btn btn-primary mr-2" @onclick="GoToChangeProducts">Ændre Produkter</button>
+            <button class="btn btn-primary" @onclick="GoToDeleteProducts">Slette Produkter</button>
+        </div>
+    </div>
+    <!-- Indholdssektion -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <h1>@pageTitle</h1>
+            <!-- Hovedindholdet for de forskellige sider vises her -->
+        </div>
+    </div>
+</div>
+
+@code {
+    // Variabel til at holde sidenavnet
+    private string pageTitle = "Vælg en handling fra navigationsbaren";
+
+    public UserPage()
+    {
+    }
+
+    // Metoder til at navigere til de forskellige sider
+    private void GoToProfile()
+    {
+        // Logik til at navigere til profilsiden
+        pageTitle = "Min Profil";
+    }
+
+    private void GoToAddBooks()
+    {
+        // Logik til at navigere til siden for at tilføje bøger
+        pageTitle = "Tilføj Bøger";
+    }
+
+    private void GoToChangeProducts()
+    {
+        // Logik til at navigere til siden for at ændre produkter
+        pageTitle = "Ændre Produkter";
+        navManager.NavigateTo("/UpdateDelete"); // Naviger til den ønskede side
+    }
+
+
+    private void GoToDeleteProducts()
+    {
+        // Logik til at navigere til siden for at slette produkter
+        pageTitle = "Slette Produkter";
+    }
+}

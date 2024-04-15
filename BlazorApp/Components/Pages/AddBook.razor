@@ -1,5 +1,7 @@
-﻿@page "/AddBook"
+﻿@layout MainLayout
+@page "/AddBook"
 @inject DatabaseService databaseService
+@inject AuthenticationService authService
 @inject NavigationManager navManager
 @using Npgsql;
 @using NpgsqlTypes
@@ -8,7 +10,8 @@
 
 <h2>Add a New Book</h2>
 
-
+@if (authService.IsAuthenticated)
+{
 <div class="form-group">
     <label for="title">Title</label>
     <input id="title" type="text" class="form-control" @bind="book.Title" />
@@ -68,6 +71,10 @@
     <label for="pages">Pages</label>
     <input id="pages" type="number" class="form-control" @bind="book.Pages" />
 </div>
+    <div class="form-group">
+        <label for="type">Type</label>
+        <input id="type" type="text" class="form-control" @bind="book.Type" />
+    </div>
 
 <div class="form-group">
     <label for="description">Description</label>
@@ -79,14 +86,18 @@
     <input id="stars" type="number" class="form-control" @bind="book.Stars" />
 </div>
 <button class="btn btn-primary" @onclick="AddBookToDatabase">Add Book</button>
+}
+
+
 
 @code {
     private Book book = new Book();
 
     private void AddBookToDatabase()
     {
-        databaseService.AddBook(book);
-        
+        databaseService.AddBook(book, authService.CurrentUser.UserID);
+        navManager.NavigateTo("/Bookpage");
+
     }
 }
 

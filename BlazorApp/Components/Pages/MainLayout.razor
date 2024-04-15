@@ -1,0 +1,32 @@
+﻿@page "/MainLayout"
+
+@inject DatabaseService databaseService
+@inject NavigationManager navManager
+@inherits LayoutComponentBase
+
+
+
+<div class="row">
+    <div class="col-md-12 bg-light p-3">
+        <h4>Navigation</h4>
+        <button class="btn btn-primary mr-2" @onclick="GoToProfile">Min Profil</button>
+        <button class="btn btn-primary mr-2" @onclick="GoToAddBooks">Tilføj Bøger</button>
+        <button class="btn btn-primary mr-2" @onclick="GoToChangeProducts">Ændre Produkter</button>
+        <button class="btn btn-primary" @onclick="GoToDeleteProducts">Slette Produkter</button>
+    </div>
+</div>
+
+<div class="container">
+    
+    @Body
+</div>
+
+@code {
+    // Metoder til navigation
+    private void GoToProfile() { navManager.NavigateTo("/Profile"); }
+    private void GoToAddBooks() { navManager.NavigateTo("/AddBook"); }
+    private void GoToChangeProducts() { navManager.NavigateTo("/UpdateDelete"); }
+    private void GoToDeleteProducts() { navManager.NavigateTo("/UpdateDelete"); }
+
+  
+}
