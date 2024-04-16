@@ -1,9 +1,11 @@
-﻿using Domain_Models;
+﻿using BlazorApp.Components.Pages;
+using Domain_Models;
 using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 
 namespace BlazorApp.Services
 {
@@ -178,34 +180,38 @@ namespace BlazorApp.Services
             }
             return books;
         }
-        public void AddBook(Book book)
+        public void AddBook(Book book, int UserID)
         {
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-
-                using (var cmd = new NpgsqlCommand(@"INSERT INTO Books(Title, Author, Condition, Category, Price, ImagePath, Language, ReleaseDate, ISBN, Pages, Description, UserID)
-                 VALUES (@Title, @Author, @Condition, @Category, @Price, @ImagePath, @Language, @ReleaseDate, @ISBN, @Pages, @Description, @UserID)", connection))
+          
+                using (var connection = new NpgsqlConnection(connectionString))
                 {
-                    cmd.Parameters.AddWithValue("Title", book.Title);
-                    cmd.Parameters.AddWithValue("Author", book.Author);
-                    cmd.Parameters.AddWithValue("Condition", book.Condition);
-                    cmd.Parameters.AddWithValue("Category", book.Category);
-                    cmd.Parameters.AddWithValue("Price", book.Price);
-                    cmd.Parameters.AddWithValue("ImagePath", book.ImagePath);
-                    cmd.Parameters.AddWithValue("Language", book.Language);
-                    cmd.Parameters.AddWithValue("ReleaseDate", book.ReleaseDate);
-                    cmd.Parameters.AddWithValue("ISBN", book.ISBN);
-                    cmd.Parameters.AddWithValue("Pages", book.Pages);
-                    cmd.Parameters.AddWithValue("Description", book.Description);
-                    cmd.Parameters.AddWithValue("UserID", 1); // Erstat med den faktiske bruger-ID
-                    cmd.ExecuteNonQuery();
+                    connection.Open();
+
+                    using (var cmd = new NpgsqlCommand(@"INSERT INTO Books(Title, Author, Condition, Category, Price, ImagePath, Language, ReleaseDate, ISBN, Pages, Type, Description, UserID)
+                 VALUES (@Title, @Author, @Condition, @Category, @Price, @ImagePath, @Language, @ReleaseDate, @ISBN, @Pages,@type, @Description, @UserID)", connection))
+                    {
+                        cmd.Parameters.AddWithValue("Title", book.Title);
+                        cmd.Parameters.AddWithValue("Author", book.Author);
+                        cmd.Parameters.AddWithValue("Condition", book.Condition);
+                        cmd.Parameters.AddWithValue("Category", book.Category);
+                        cmd.Parameters.AddWithValue("Price", book.Price);
+                        cmd.Parameters.AddWithValue("ImagePath", book.ImagePath);
+                        cmd.Parameters.AddWithValue("Language", book.Language);
+                        cmd.Parameters.AddWithValue("ReleaseDate", book.ReleaseDate);
+                        cmd.Parameters.AddWithValue("ISBN", book.ISBN);
+                        cmd.Parameters.AddWithValue("Pages", book.Pages);
+                        cmd.Parameters.AddWithValue("type", book.Type);
+                        cmd.Parameters.AddWithValue("Description", book.Description);
+                        cmd.Parameters.AddWithValue("UserID", UserID);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
+               
             }
+           
+        
 
-        }
-
-        public async Task<bool> ValidateUserAsync(int userId, string password)
+      /*  public async Task<bool> ValidateUserAsync(int userId, string password)
         {
             string sql = "SELECT password FROM Users WHERE userid = @userId";
 
@@ -236,21 +242,22 @@ namespace BlazorApp.Services
 
             return false; // No matching user or password
         }
-
+*/
 
         public List<Book> GetAllUserBooks(int UserID)
         {
             List<Book> userBooks = new List<Book>();
 
 
-            string sql = "SELECT * FROM Books WHERE UserId = @UserId";
+            string sql = "SELECT * FROM Books WHERE UserId = @UserID";
 
             using (var connection = new NpgsqlConnection(connectionString))
             {
                 connection.Open();
-
+                
                 using (var command = new NpgsqlCommand(sql, connection))
                 {
+                    command.Parameters.AddWithValue("@UserID", UserID);
                     using (var reader = command.ExecuteReader())
                     {
 
@@ -272,8 +279,9 @@ namespace BlazorApp.Services
                                 ISBN = reader.IsDBNull(reader.GetOrdinal("ISBN")) ? 0L : Convert.ToInt64(reader["ISBN"]),
                                 Weight = reader.IsDBNull(reader.GetOrdinal("Weight")) ? 0.0f : Convert.ToSingle(reader["Weight"]),
                                 Pages = reader.IsDBNull(reader.GetOrdinal("Pages")) ? 0 : Convert.ToInt32(reader["Pages"]),
+                                Type = reader["Type"].ToString(),
                                 Description = reader["Description"].ToString(),
-                                //UserId = Convert.ToInt32(reader["userid"])
+                                UserID = Convert.ToInt32(reader["userid"])
                                
                             };
 
@@ -294,7 +302,7 @@ namespace BlazorApp.Services
                 connection.Open();
                 using (var cmd = new NpgsqlCommand(@"UPDATE Books
                                                         SET Title = @Title, Author = @Author, Condition = @Condition, Category = @Category, Price = @Price, 
-                                                        ImagePath = @ImagePath, Language = @Language, ReleaseDate = @ReleaseDate, ISBN = @ISBN, Pages = @Pages, 
+                                                        ImagePath = @ImagePath, Language = @Language, ReleaseDate = @ReleaseDate, ISBN = @ISBN, Pages = @Pages, Type = @Type, 
                                                         Description = @Description
                                                         WHERE Id = @Id", connection))
                 {
@@ -309,6 +317,7 @@ namespace BlazorApp.Services
                     cmd.Parameters.AddWithValue("@ReleaseDate", itemToUpdate.ReleaseDate);
                     cmd.Parameters.AddWithValue("@ISBN", itemToUpdate.ISBN);
                     cmd.Parameters.AddWithValue("@Pages", itemToUpdate.Pages);
+                    cmd.Parameters.AddWithValue("@Type", itemToUpdate.Type);
                     cmd.Parameters.AddWithValue("@Description", itemToUpdate.Description);
 
                     cmd.ExecuteNonQuery();
@@ -377,6 +386,7 @@ namespace BlazorApp.Services
         }
 
 
+<<<<<<< HEAD
         public void AddToCart(int BookID, int UserID)
         {
             if (UserID >= 0)
@@ -388,8 +398,13 @@ namespace BlazorApp.Services
             if (UserID >= 0)
                 ExecuteSql($"DELETE FROM ShoppingCart WHERE UserID = {UserID} AND BookID = {BookID};");
         }
+=======
+>>>>>>> 9c9f40f5ccbd8b8efae1a743ecfe171279df16be
 
     }
+
+    
+
 }
 
 

@@ -1,12 +1,15 @@
-﻿@page "/UpdateDelete"
+﻿@layout MainLayout
+@page "/UpdateDelete"
 @inject DatabaseService databaseService
 @inject NavigationManager navManager
+@inject AuthenticationService authService
 
 <PageTitle>Update and Delete Book</PageTitle>
 
-<h3>Update and Delete Book</h3>
 
-@if (isAuthenticated)
+
+@if (authService.IsAuthenticated)
+    LoadBooksFromDatabase();
 {
 
     @if (allUserBooks != null)
@@ -28,6 +31,7 @@
                     <th>ISBN</th>
                     <th>Weight</th>
                     <th>Pages</th>
+                    <th>Type</th>
                     <th>Condition</th>
                     <th>Actions</th>
                 </tr>
@@ -157,6 +161,16 @@
                                 @item.Pages
                             }
                         </td>
+                    <td>
+                        @if (editingItem != null && editingItem.Id == item.Id)
+                        {
+                            <input type="text" @bind="editingItem.Type" />
+                        }
+                        else
+                        {
+                            @item.Type
+                        }
+                    </td>
                         <td>
                             @if (editingItem != null && editingItem.Id == item.Id)
                             {
@@ -170,12 +184,12 @@
                         <td>
                             @if (editingItem != null && editingItem.Id == item.Id)
                             {
-                                <button @onclick="SaveChanges">Save Changes</button>
+                            <button class="btn btn-success" @onclick="SaveChanges">Gem Ændringer</button>
                             }
                             else
                             {
-                                <button @onclick="() => EditItem(item)">Edit</button>
-                                <button @onclick="() => DeleteItem(item)">Delete</button>
+                            <button class="btn btn-primary" @onclick="() => EditItem(item)">Rediger</button>
+                            <button class="btn btn-danger" @onclick="() => DeleteItem(item)">Slet</button>
                             }
                         </td>
                     </tr>
@@ -189,51 +203,24 @@
         <p>No books found.</p>
     }
 }
-else
-{
-    <!-- Login form -->
-    <div>
-        <label for="UserId">userID:</label>
-        <input type="number" id="UserId" @bind="@UserId" />
 
-        <label for="password">Password:</label>
-        <input type="password" id="password" @bind="@password" />
-
-        <button @onclick="Login" class="btn btn-primary">Login</button>
-        @if (!string.IsNullOrEmpty(errorMessage))
-        {
-            <p class="text-danger">@errorMessage</p>
-        }
-    </div>
-}
 
 @code {
     public Book UserBooks { get; set; }
     public List<Book> allUserBooks { get; set; }
-
-    private bool isAuthenticated = false;
-    private int UserId;
-    private string password;
     private string errorMessage;
     private Book editingItem;
-
-    private async Task Login()
+    
+ 
+    
+    private void LoadBooksFromDatabase()
     {
-        isAuthenticated = await databaseService.ValidateUserAsync(UserId, password);
-
-        if (isAuthenticated)
-        {
-            LoadBooksFromDatabase(UserId);
-        }
-        else
-        {
-            errorMessage = "Invalid Username or password. Please try again.";
-        }
-    }
-
-    private void LoadBooksFromDatabase(int userId)
-    {
-        allUserBooks = databaseService.GetAllUserBooks(userId);
+      
+        
+        allUserBooks = databaseService.GetAllUserBooks(authService.CurrentUser.UserID);
+        
+        
+       
     }
 
     void EditItem(Book item)
@@ -253,6 +240,7 @@ else
                 ISBN = item.ISBN,
                 Weight = item.Weight,
                 Pages = item.Pages,
+                Type = item.Type,
                 Condition = item.Condition
             };
     }
@@ -293,6 +281,7 @@ else
             itemToUpdate.ISBN = editingItem.ISBN;
             itemToUpdate.Weight = editingItem.Weight;
             itemToUpdate.Pages = editingItem.Pages;
+            itemToUpdate.Type = editingItem.Type;
             itemToUpdate.Condition = editingItem.Condition;
 
             await databaseService.UpdateBookAsync(itemToUpdate);

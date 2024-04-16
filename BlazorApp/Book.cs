@@ -15,6 +15,7 @@
         public long ISBN { get; set; }
         public float Weight { get; set; }
         public int Pages { get; set; }
+        public string Type { get; set; }
         public string Description { get; set; }
         public float Stars { get; set; }
         public int UserID { get; set; }

@@ -1,0 +1,21 @@
+﻿@inject AuthenticationService authService
+@layout MainLayout
+@page "/profile"
+
+@if (authService.IsAuthenticated)
+    {
+        <p>Welcome, @authService.CurrentUser.Username!</p>
+        <p>Email: @authService.CurrentUser.Email</p>
+        <!-- Add more profile information here as needed -->
+    }
+    else
+    {
+        <p>Please log in to view your profile.</p>
+    }
+
+@code {
+    public List<User> userInfo { get; set; }
+
+
+
+}

@@ -52,9 +52,26 @@
 
     private string errorMessage = "";
 
+<<<<<<< HEAD
     private int userId;  // Variable to hold the UserID
 
     private async Task HandleLogin()
+=======
+    private async Task HandleLogin()
+    {
+        await authService.Login(loginModel.Username, loginModel.Password);
+        if (authService.IsAuthenticated)
+        {
+            Console.WriteLine($"Logging in {loginModel.Username}");
+            AppState.LoggedIn = true;
+            navManager.NavigateTo("MainLayout");
+        }
+        else
+        {
+            errorMessage = "Invalid username or password. Please try again.";
+        }
+    }
+>>>>>>> 9c9f40f5ccbd8b8efae1a743ecfe171279df16be
 
     {
 
