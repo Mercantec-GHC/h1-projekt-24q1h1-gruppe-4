@@ -12,6 +12,8 @@
         <button class="btn btn-primary mr-2" @onclick="GoToProfile">Min Profil</button>
         <button class="btn btn-primary mr-2" @onclick="GoToAddBooks">Tilføj Bøger</button>
         <button class="btn btn-primary mr-2" @onclick="GoToChangeProducts">Ændre Produkter</button>
+        <button class="btn btn-primary mr-2" @onclick="GoToCart">Cart</button>
+
         <button class="btn btn-primary" @onclick="GoToDeleteProducts">Slette Produkter</button>
     </div>
 </div>
@@ -28,5 +30,6 @@
     private void GoToChangeProducts() { navManager.NavigateTo("/UpdateDelete"); }
     private void GoToDeleteProducts() { navManager.NavigateTo("/UpdateDelete"); }
 
-  
+      private void GoToCart() { navManager.NavigateTo("/Cart"); }
+
 }
