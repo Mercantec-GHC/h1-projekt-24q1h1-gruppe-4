@@ -627,6 +627,34 @@ h1:focus {
     border-radius: 2px;
 }
 
+.reviews-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Align review texts to the left */
+    width: 100%; /* Full width to accommodate content */
+}
+
+.reviews-header {
+    text-align: center;
+    margin-bottom: 10px; /* Add more space below the header */
+    color: #191C1F;
+    font-size: 16px;
+    font-family: Public Sans;
+    font-weight: 600;
+    line-height: 24px;
+}
+
+
+.review {
+    display: block; /* Reinforcing block display */
+    margin-bottom: 10px; /* Adds space below each review */
+    color: #5F6C72;
+    font-size: 14px;
+    font-family: Public Sans;
+    font-weight: 400;
+    line-height: 20px;
+}
+
 .DescriptionContainer,
 .TopCategoryContainer,
 .QuickLinksContainer {

@@ -18,10 +18,24 @@
                                 <!-- Dynamically generate star images based on rating -->
                         </div>
 
-                        <div class="RatingAndFedbackNumber">
-                            <div class="StarSellerRating">4.7 Star Seller Rating</div>
-                            <div class="UserFedback">(11 User Feedback)</div>
-                        </div>
+                        <!-- Reviews Section -->
+                        @if (reviewList != null && reviewList.Count > 0)
+                        {
+                            float rating = 0.0f;
+                            @foreach (var review in reviewList)
+                            {
+                                rating += review.Rating;
+                            }
+                            <div class="RatingAndFedbackNumber">
+                                <div class="StarSellerRating">@(rating / reviewList.Count) Star Seller Rating</div>
+                                <div class="UserFedback">(@(reviewList.Count) User Feedback)</div>
+                            </div>
+                        }
+                        else
+                        {
+                            <h3>No reviews found in database.</h3>
+                        }
+
                         <h2 class="TitleOfTheBook">@ProductToShow.Title</h2>
                     
                     </div>
@@ -90,20 +104,24 @@
 
         <div class="BookInformation3Container">
             <div class="BookInformation3ToggleBar">
-                <div class="DescriptionButton">
+                <div class="DescriptionButton" @onclick="SetToDescriptionTab">
                     <div class="Description">Description</div>
                 </div>
-                <div class="SellersInformationButton">
+                <div class="SellersInformationButton" @onclick="SetToSellersInformationTab">
                     <div class="SellersInformation">Sellers Information</div>
                 </div>
-                <div class="ReviewsButton">
+                <div class="ReviewsButton" @onclick="SetToReviewsTab">
                     <div class="Reviews">Reviews</div>
                 </div>
+
             </div>
 
             <div class="Devider2"></div>
 
             <div class="BookInformation3SubContainer">
+
+                @if (activeTab == "Description")
+                {
                 <div class="DescriptionContainer">
                     <div class="DescriptionHeader">Description</div>
                     <div class="DescriptionContent"> @ProductToShow.Description</div>
@@ -168,27 +186,31 @@
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+                }
 
-        
-        <!-- Reviews Section -->
-        @if (reviewList!=null && reviewList.Count > 0)
-        {
-            float rating = 0.0f;
-            <h3>Reviews:</h3>
-            @foreach (var review in reviewList)
-            {
-                <p>@review.ReviewString</p>
-                rating += review.Rating;
-            }
-            <h3>Average rating: @(rating / reviewList.Count) / 5</h3>
-        }
-        else
-        {
-            <h3>No reviews found in database.</h3>
-        }
-        
+                else if (activeTab == "Reviews")
+                {
+                    
+                    @if (reviewList != null && reviewList.Count > 0)
+                    {
+                        float rating = 0.0f;
+                        <div class="reviews-wrapper">
+                        <h3 class ="reviews-header">Reviews:</h3>
+                        @foreach (var review in reviewList)
+                        {
+                            <p class="review">@review.ReviewString</p>
+                            rating += review.Rating;
+                        }
+                        </div>
+                    }
+                    
+                    else
+                    {
+                        <h3>No reviews found in database.</h3>
+                    }
+                }
+            </div>
+        </div>        
 
         <div class="RecommendedBooks">Recommended Books</div>
 
@@ -218,6 +240,7 @@ else
 @code {
     [Parameter]
     public int productId { get; set; }
+    private string activeTab = "Description";
 
     private UsedBooks ProductToShow;
     private List<UsedBooks> firstTwelveBooks;
@@ -276,6 +299,16 @@ else
 
         }
         StateHasChanged(); // Force update
+    }
+
+    void SetToDescriptionTab() => SetActiveTab("Description");
+    void SetToSellersInformationTab() => SetActiveTab("SellersInformation");
+    void SetToReviewsTab() => SetActiveTab("Reviews");
+
+    void SetActiveTab(string tab)
+    {
+        activeTab = tab;
+        StateHasChanged();
     }
 }
         
