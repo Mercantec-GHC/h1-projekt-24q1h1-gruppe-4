@@ -44,35 +44,57 @@
     </div>
 </EditForm>
 
+
+
 @code {
+
     private LoginModel loginModel = new LoginModel();
+
     private string errorMessage = "";
 
-    private async Task HandleLogin()
-    {
-        await authService.Login(loginModel.Username, loginModel.Password);
-        if (authService.IsAuthenticated)
-        {
-            Console.WriteLine($"Logging in {loginModel.Username}");
-            AppState.LoggedIn = true;
-            navManager.NavigateTo("/");
-        }
-        else
-        {
-            errorMessage = "Invalid username or password. Please try again.";
-        }
-    }
+    private int userId;  // Variable to hold the UserID
 
-    private async Task Logout()
+    private async Task HandleLogin()
+
     {
-        // Call the Logout method of the AuthenticationService
+
+        await authService.Login(loginModel.Username, loginModel.Password);
+        if (authService.IsAuthenticated == true)
+
+        {
+
+            userId = authService.CurrentUser.UserID;  // Store UserID in local variable
+
+            Console.WriteLine($"Logging in {loginModel.Username} with ID {userId}");
+
+            AppState.LoggedIn = true;
+
+
+            navManager.NavigateTo("/");
+
+        }
+
+        else
+
+        {
+
+            errorMessage = "Invalid username or password. Please try again.";
+
+        }
+
+    }
+ 
+    private async Task Logout()
+
+    {
+
         await authService.Logout();
+
         AppState.LoggedIn = false;
 
-        // Redirect the user to the login page again
         navManager.NavigateTo("/login");
+
     }
 
 }
-
 

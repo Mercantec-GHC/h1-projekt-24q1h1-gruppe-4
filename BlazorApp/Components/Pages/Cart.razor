@@ -1,0 +1,96 @@
+﻿@inject AppState AppState
+@inject DatabaseService databaseService
+@inject NavigationManager navManager
+@inject AuthenticationService authService
+@using Microsoft.JSInterop
+@inject IJSRuntime jsRuntime
+
+@page "/cart"
+
+<h1> Shopping cart</h1>
+@if (allProducts != null && allProducts.Count > 0)
+{
+    <div class="books-container">
+@foreach (var book in allProducts)
+{
+    <div class="book-card" >
+        <div class="book-item">
+                    <img src="@book.ImagePath" alt="Book image" class="book-image" @onclick="@( () => navManager.NavigateTo($"/bookpage/{book.Id}") )" />
+            <div class="book-details">
+                <h3 class="white_space_wrap">@book.Title</h3>
+                <p>@book.Author</p>
+                <p>kr. @book.Price</p>
+                    <button @onclick="@( () =>  removeCartItem(book.Id,user))"> Remove  </button>
+            </div>
+        </div>
+    </div>
+    }
+</div>
+}
+else
+{
+    <p> No books in cart</p>
+}
+
+
+@code {
+
+    public int user { get; set; }
+    public List<UsedBooks> allProducts { get; set; }
+
+
+    protected override void OnInitialized()
+    {
+        user = -1;        
+    }
+
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            await getuser();
+        }
+    }
+
+    public async Task getuser()
+    {
+        Console.WriteLine("Attempting to retrieve user ID from localStorage...");
+        string userIdString = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "CurrentUser_UserID");
+        Console.WriteLine($"Retrieved user ID: {userIdString}");
+
+        if (!string.IsNullOrEmpty(userIdString))
+        {
+            user = int.Parse(userIdString);
+            getCartList();
+            Console.WriteLine($"Parsed user ID: {user}");
+        }
+        else
+        {
+            Console.WriteLine("User ID not found in localStorage.");
+            user = -1;
+
+        }
+        StateHasChanged(); // Force update
+    }
+
+
+    public void removeCartItem(int bookID, int userID)
+    {
+        databaseService.RemoveFromCart(bookID, userID);
+        getCartList();
+    }
+
+    public void getCartList()
+    {
+        Console.WriteLine("getting cart list....");
+        if (user>=0)
+            allProducts = databaseService.GetBooksFromSql($"SELECT ShoppingCart.CartID, Books.* FROM ShoppingCart JOIN Books ON ShoppingCart.BookID = Books.Id WHERE ShoppingCart.UserID = {user};");
+    }
+
+
+}
+
+

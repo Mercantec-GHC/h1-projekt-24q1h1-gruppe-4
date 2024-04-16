@@ -1,6 +1,9 @@
 @page "/AllBook"
 @inject DatabaseService databaseService
 @inject NavigationManager navManager
+@using Microsoft.JSInterop
+@inject IJSRuntime jsRuntime
+
 
 @if (allBooks == null)
 {
@@ -22,14 +25,16 @@ else
 
     @foreach (var book in allBooks)
     {
-        <div class="book-card" @onclick="() => ViewBookDetails(book.Id)">
+        <div class="book-card" >
             <div class="book-item">
-                <img src="@book.ImagePath" alt="Book cover" class="book-image" />
+                    <img src="@book.ImagePath" alt="Book cover" class="book-image" @onclick="() => ViewBookDetails(book.Id)" />
                 <div>
                     <div class="book-details">
                         <h2>@book.Title</h2>
                         <p>@book.Author</p>
                         <p>kr. @book.Price</p>
+                        <button @onclick="@( () =>  databaseService.AddToCart(book.Id,user))"> Add to cart  </button>
+
                     </div>
                 </div>
             </div>
@@ -41,10 +46,12 @@ else
 @code {
     private List<UsedBooks> allBooks;
     private string searchQuery = string.Empty;
+    public int user { get; set; }
 
     protected override void OnInitialized()
     {
         allBooks = databaseService.GetAllUsedBooks();
+        user = -1;
     }
 
     void ViewBookDetails(int bookId)
@@ -68,4 +75,36 @@ else
             ).ToList();
         }
     }
+
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+
+        if (firstRender)
+        {
+            await getuser();
+        }
+    }
+
+    public async Task getuser()
+    {
+        Console.WriteLine("Attempting to retrieve user ID from localStorage...");
+        string userIdString = await jsRuntime.InvokeAsync<string>("localStorage.getItem", "CurrentUser_UserID");
+        Console.WriteLine($"Retrieved user ID: {userIdString}");
+
+        if (!string.IsNullOrEmpty(userIdString))
+        {
+            user = int.Parse(userIdString);
+            Console.WriteLine($"Parsed user ID: {user}");
+        }
+        else
+        {
+            Console.WriteLine("User ID not found in localStorage.");
+            user = -1;
+
+        }
+        StateHasChanged(); // Force update
+    }
+
+
 }

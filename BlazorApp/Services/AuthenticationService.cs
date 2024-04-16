@@ -44,8 +44,12 @@ namespace BlazorApp.Services
 
         private async Task SaveToLocalStorage()
         {
-            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "IsAuthenticated", IsAuthenticated.ToString());
-            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "CurrentUser", CurrentUser.Username);
+            if (CurrentUser != null)
+            {
+                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "IsAuthenticated", IsAuthenticated.ToString());
+                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "CurrentUser_Username", CurrentUser.Username);
+                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "CurrentUser_UserID", CurrentUser.UserID.ToString());
+            }
         }
 
         public async Task LoadFromLocalStorage()
@@ -56,17 +60,21 @@ namespace BlazorApp.Services
                 IsAuthenticated = bool.Parse(isAuthenticatedString);
             }
 
-            string username = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "CurrentUser");
-            if (!string.IsNullOrEmpty(username))
+            string username = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "CurrentUser_Username");
+            string userIdString = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", "CurrentUser_UserID");
+            if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(userIdString))
             {
-                CurrentUser = _databaseService.GetUserByUsername(username);
+                int userId = int.Parse(userIdString);
+                CurrentUser = new User { Username = username, UserID = userId };
             }
         }
+
 
         private async Task ClearLocalStorage()
         {
             await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "IsAuthenticated");
-            await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "CurrentUser");
+            await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "CurrentUser_Username");
+            await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "CurrentUser_UserID");
         }
 
         private async Task ClearLocalStorageOnPageExit()

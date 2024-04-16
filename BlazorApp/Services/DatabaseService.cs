@@ -376,6 +376,19 @@ namespace BlazorApp.Services
             return null;
         }
 
+
+        public void AddToCart(int BookID, int UserID)
+        {
+            if (UserID >= 0)
+                ExecuteSql($"INSERT INTO ShoppingCart (UserID, BookID) SELECT {UserID}, {BookID} WHERE NOT EXISTS (SELECT 1 FROM ShoppingCart WHERE UserID = {UserID} AND BookID = {BookID});");
+        }
+
+        public void RemoveFromCart(int BookID, int UserID)
+        {
+            if (UserID >= 0)
+                ExecuteSql($"DELETE FROM ShoppingCart WHERE UserID = {UserID} AND BookID = {BookID};");
+        }
+
     }
 }
 
