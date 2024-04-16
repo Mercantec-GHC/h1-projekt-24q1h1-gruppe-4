@@ -386,7 +386,6 @@ namespace BlazorApp.Services
         }
 
 
-<<<<<<< HEAD
         public void AddToCart(int BookID, int UserID)
         {
             if (UserID >= 0)
@@ -398,8 +397,6 @@ namespace BlazorApp.Services
             if (UserID >= 0)
                 ExecuteSql($"DELETE FROM ShoppingCart WHERE UserID = {UserID} AND BookID = {BookID};");
         }
-=======
->>>>>>> 9c9f40f5ccbd8b8efae1a743ecfe171279df16be
 
     }
 
