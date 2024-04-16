@@ -384,7 +384,31 @@ namespace BlazorApp.Services
             }
             return null;
         }
-
+        public List<Review> GetReviews(long isbn)
+        {
+            List<Review> reviews = new List<Review>();
+            using (var connection = new NpgsqlConnection(connectionString))
+            {
+                connection.Open();
+                var sql = $"SELECT * FROM Reviews WHERE ISBN = {isbn};";
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            reviews.Add(new Review
+                            {
+                                ReviewString = reader["Review"].ToString(),
+                                ISBN = Convert.ToInt64(reader["ISBN"]),
+                                Rating = (float)Convert.ToDouble(reader["Rating"]),
+                            });
+                        }
+                    }
+                }
+            }
+            return reviews;
+        }
 
         public void AddToCart(int BookID, int UserID)
         {

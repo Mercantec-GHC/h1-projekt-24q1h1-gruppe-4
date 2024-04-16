@@ -171,9 +171,9 @@
             </div>
         </div>
 
-        @*
+        
         <!-- Reviews Section -->
-        @if (reviewList.Count > 0)
+        @if (reviewList!=null && reviewList.Count > 0)
         {
             float rating = 0.0f;
             <h3>Reviews:</h3>
@@ -188,7 +188,7 @@
         {
             <h3>No reviews found in database.</h3>
         }
-        *@
+        
 
         <div class="RecommendedBooks">Recommended Books</div>
 
@@ -239,6 +239,7 @@ else
     private void LoadBookDetails(int productId)
     {
         ProductToShow = databaseService.GetUsedBookById(productId);
+        reviewList = databaseService.GetReviews(ProductToShow.ISBN);
         StateHasChanged();
     }
 
