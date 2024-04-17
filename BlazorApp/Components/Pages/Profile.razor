@@ -1,5 +1,7 @@
 ﻿@inject AuthenticationService authService
+@inject NavigationManager navManager
 @layout MainLayout
+
 @page "/profile"
 
 @if (authService.IsAuthenticated)
@@ -10,9 +12,10 @@
     }
     else
     {
+       
         <p>Please log in to view your profile.</p>
     }
-
+ 
 @code {
     public List<User> userInfo { get; set; }
 

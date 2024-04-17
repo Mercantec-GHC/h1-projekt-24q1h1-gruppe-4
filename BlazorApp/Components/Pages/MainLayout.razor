@@ -11,25 +11,29 @@
         <h4>Navigation</h4>
         <button class="btn btn-primary mr-2" @onclick="GoToProfile">Min Profil</button>
         <button class="btn btn-primary mr-2" @onclick="GoToAddBooks">Tilføj Bøger</button>
-        <button class="btn btn-primary mr-2" @onclick="GoToChangeProducts">Ændre Produkter</button>
+        <button class="btn btn-primary mr-2" @onclick="GoToChangeProducts">Ændre eller slette en bog</button>
         <button class="btn btn-primary mr-2" @onclick="GoToCart">Cart</button>
+        <button class="btn btn-primary mr-2" @onclick="GoToHomePage">Vend tilbage til forsiden</button>
 
-        <button class="btn btn-primary" @onclick="GoToDeleteProducts">Slette Produkter</button>
+        
     </div>
 </div>
 
-<div class="container">
-    
+<div class="content px-4">
     @Body
 </div>
+<style>
+    .content {
+        margin-left: 0; /* Sæt venstre margin til 0 */
+    }
+</style>
 
 @code {
     // Metoder til navigation
     private void GoToProfile() { navManager.NavigateTo("/Profile"); }
     private void GoToAddBooks() { navManager.NavigateTo("/AddBook"); }
     private void GoToChangeProducts() { navManager.NavigateTo("/UpdateDelete"); }
-    private void GoToDeleteProducts() { navManager.NavigateTo("/UpdateDelete"); }
-
-      private void GoToCart() { navManager.NavigateTo("/Cart"); }
+    private void GoToCart() { navManager.NavigateTo("/Cart"); }
+    private void GoToHomePage() { navManager.NavigateTo("/"); }
 
 }
